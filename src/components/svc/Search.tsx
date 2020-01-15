@@ -47,10 +47,15 @@ class Search extends React.Component<SearchProps> {
             },
         };
 
+        const colLayout = {
+            xs: {span: 24},
+            sm: {span: 6},
+        };
+
         return (
             <Form {...formItemLayout} onSubmit={this.handleSubmit}>
                 <Row gutter={18}>
-                    <Col span={6}>
+                    <Col {...colLayout}>
                         <Form.Item label="服务">
                             {
                                 getFieldDecorator('appkey', {
@@ -71,7 +76,7 @@ class Search extends React.Component<SearchProps> {
                         </Form.Item>
                     </Col>
 
-                    <Col span={5}>
+                    <Col {...colLayout} >
                         <Form.Item label="环境">
                             {
                                 getFieldDecorator('env', {

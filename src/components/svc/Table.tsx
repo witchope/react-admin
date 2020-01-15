@@ -1,10 +1,10 @@
-import React, {CSSProperties} from 'react';
+import React from 'react';
 import {Button, Table, Tag, Tooltip} from 'antd';
 import {ColumnProps} from 'antd/lib/table';
 
 const columns: ColumnProps<any>[] = [
-    {title: 'ID', width: 100, dataIndex: 'id', key: 'id', fixed: 'left'},
-    {title: '应用（AppKey）', width: 200, dataIndex: 'appkey', key: 'appkey', fixed: 'left'},
+    // {title: 'ID', width: 100, dataIndex: 'id', key: 'id', fixed: 'left'},
+    {title: '应用（AppKey）', width: 200, dataIndex: 'appkey', key: 'appkey', fixed: "left"},
     {
         title: '环境（ENV）',
         dataIndex: 'env',
@@ -38,13 +38,8 @@ const columns: ColumnProps<any>[] = [
         dataIndex: 'version',
         key: '3',
         render: (x: any) => {
-            const style: CSSProperties = {
-                display: "-webkit-box",
-                overflow: "hidden",
-                textOverflow: "ellipsis",
-                whiteSpace: "nowrap"
-            };
-            return (<Tooltip title={x}><span style={style}>{x}</span></Tooltip>);
+            const text = x.length > 10 ? x.substr(0, 9) + "..." : x;
+            return (<Tooltip title={x}><span>{text}</span></Tooltip>);
         }
     },
     {
@@ -93,8 +88,29 @@ type TableProps = {
 
 class ServiceTable extends React.Component<TableProps, any> {
 
+    constructor(props: TableProps) {
+        super(props);
+        this.state = {
+            total: 0,
+        }
+    }
+
+    componentDidUpdate(prevProps: Readonly<TableProps>, prevState: Readonly<any>, snapshot?: any): void {
+        const {recordsTotal} = this.props.data.data;
+        debugger;
+        if (recordsTotal > 0 && recordsTotal !== prevProps.data.data.recordsTotal) {
+            this.setState(() => {
+                return {
+                    total: recordsTotal
+                }
+            });
+        }
+
+    }
+
     render() {
         const {data, showInfoModal} = this.props;
+        const {total} = this.state;
 
         let source = [];
 
@@ -107,6 +123,11 @@ class ServiceTable extends React.Component<TableProps, any> {
                 loading={data.isFetching}
                 columns={columns}
                 dataSource={source}
+                pagination={
+                    {
+                        total
+                    }
+                }
                 bordered
                 scroll={{x: 1300}}
                 rowKey={((record) => record.id)}

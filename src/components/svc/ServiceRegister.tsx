@@ -1,6 +1,6 @@
 import React from "react";
 import BreadcrumbCustom from "../BreadcrumbCustom";
-import {Card, Col, Row} from "antd";
+import {Card, Col, Modal, Row} from "antd";
 import SvcTable from "./Table";
 import {CSearch} from "./Search";
 import {CInfoModal} from "./InfoModal";
@@ -39,8 +39,6 @@ class ServiceRegister extends React.Component<SvcRegProps, any> {
             setAlitaState
         } = this.props;
 
-        debugger;
-
         const searchProps = {
             appKeys,
             submit(param: any) {
@@ -51,7 +49,12 @@ class ServiceRegister extends React.Component<SvcRegProps, any> {
         const tableProps = {
             data,
             showInfoModal(param: any) {
-                debugger;
+                if (param === "") {
+                    Modal.warning({
+                        title: '服务已下线',
+                        content: '重启服务或联系管理员',
+                    });
+                }
                 setAlitaState({stateName: "info", data: {info: param, visible: true}})
             },
         };
@@ -59,7 +62,6 @@ class ServiceRegister extends React.Component<SvcRegProps, any> {
         const modalProps = {
             info,
             closeInfoModal(param: any) {
-                debugger;
                 setAlitaState({stateName: "info", data: {info: param, visible: false}})
             }
         };

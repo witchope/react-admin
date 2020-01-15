@@ -83,7 +83,6 @@ class InfoModal extends React.Component<ModalProps, any> {
             },
         };
 
-        debugger;
         let appkey = '';
         let ip = '';
         let port = '';
@@ -92,7 +91,6 @@ class InfoModal extends React.Component<ModalProps, any> {
         let weight = '';
         if (modalData.length > 0 && modalData[0].appkey) {
             appkey = modalData[current].appkey;
-            debugger;
             ip = modalData[current].ip;
             port = modalData[current].port;
             transportType = modalData[current].transportType.toUpperCase();
