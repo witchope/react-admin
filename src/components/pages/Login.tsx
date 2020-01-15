@@ -9,16 +9,20 @@ import { RouteComponentProps } from 'react-router';
 import { FormProps } from 'antd/lib/form';
 
 const FormItem = Form.Item;
+
 type LoginProps = {
     setAlitaState: (param: any) => void;
     auth: any;
 } & RouteComponentProps &
     FormProps;
+
 class Login extends React.Component<LoginProps> {
+
     componentDidMount() {
         const { setAlitaState } = this.props;
         setAlitaState({ stateName: 'auth', data: null });
     }
+
     componentDidUpdate(prevProps: LoginProps) {
         // React 16.3+弃用componentWillReceiveProps
         const { auth: nextAuth = {}, history } = this.props;
@@ -28,7 +32,22 @@ class Login extends React.Component<LoginProps> {
             localStorage.setItem('user', JSON.stringify(nextAuth.data));
             history.push('/');
         }
+
+        if (nextAuth.data && nextAuth.data.code === 200) {
+            const user = {
+                uid: 1, 
+                permissions: ["auth","auth/testPage","auth/authPage","auth/authPage/edit","auth/authPage/visit"],
+                role: "系统管理员",
+                roleType: 1,
+                userName:"开发者"
+            };
+
+            const { setAlitaState } = this.props;
+
+            setAlitaState({ stateName: 'auth', data: user });
+        }
     }
+
     handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         this.props.form!.validateFields((err, values) => {
@@ -39,20 +58,27 @@ class Login extends React.Component<LoginProps> {
                     setAlitaState({ funcName: 'admin', stateName: 'auth' });
                 if (values.userName === 'guest' && values.password === 'guest')
                     setAlitaState({ funcName: 'guest', stateName: 'auth' });
+                if (values.userName === 'guoxiaohan') {
+                    setAlitaState({ 
+                        funcName: 'signin',
+                        params: {
+                            username: values.userName, 
+                            password: values.password 
+                        },
+                        stateName: 'auth'
+                    });
+                }
             }
         });
     };
-    gitHub = () => {
-        window.location.href =
-            'https://github.com/login/oauth/authorize?client_id=792cdcd244e98dcd2dee&redirect_uri=http://localhost:3006/&scope=user&state=reactAdmin';
-    };
+
     render() {
         const { getFieldDecorator } = this.props.form!;
         return (
             <div className="login">
                 <div className="login-form">
                     <div className="login-logo">
-                        <span>React Admin</span>
+                        <span>MSharp Admin</span>
                         <PwaInstaller />
                     </div>
                     <Form onSubmit={this.handleSubmit} style={{ maxWidth: '300px' }}>
@@ -62,7 +88,7 @@ class Login extends React.Component<LoginProps> {
                             })(
                                 <Input
                                     prefix={<Icon type="user" style={{ fontSize: 13 }} />}
-                                    placeholder="管理员输入admin, 游客输入guest"
+                                    placeholder="输入用户名"
                                 />
                             )}
                         </FormItem>
@@ -73,7 +99,7 @@ class Login extends React.Component<LoginProps> {
                                 <Input
                                     prefix={<Icon type="lock" style={{ fontSize: 13 }} />}
                                     type="password"
-                                    placeholder="管理员输入admin, 游客输入guest"
+                                    placeholder="输入密码"
                                 />
                             )}
                         </FormItem>
@@ -93,13 +119,6 @@ class Login extends React.Component<LoginProps> {
                             >
                                 登录
                             </Button>
-                            <p style={{ display: 'flex', justifyContent: 'space-between' }}>
-                                <span>或 现在就去注册!</span>
-                                <span onClick={this.gitHub}>
-                                    <Icon type="github" />
-                                    (第三方登录)
-                                </span>
-                            </p>
                         </FormItem>
                     </Form>
                 </div>
@@ -107,5 +126,4 @@ class Login extends React.Component<LoginProps> {
         );
     }
 }
-
 export default connectAlita(['auth'])(Form.create()(Login));

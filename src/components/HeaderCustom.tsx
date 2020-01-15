@@ -11,11 +11,13 @@ import { queryString } from '../utils';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { PwaInstaller } from './widget';
 import { connectAlita } from 'redux-alita';
+
 const { Header } = Layout;
 const SubMenu = Menu.SubMenu;
 const MenuItemGroup = Menu.ItemGroup;
 
 type HeaderCustomProps = RouteComponentProps<any> & {
+    setAlitaState: (param: any) => void;
     toggle: () => void;
     collapsed: boolean;
     user: any;
@@ -62,6 +64,9 @@ class HeaderCustom extends Component<HeaderCustomProps, HeaderCustomState> {
         e.key === 'logout' && this.logout();
     };
     logout = () => {
+        const {setAlitaState} = this.props;
+        setAlitaState({funcName: 'logout' });
+        console.log(this.props);
         localStorage.removeItem('user');
         this.props.history.push('/login');
     };

@@ -103,12 +103,13 @@ class App extends Component<AppProps> {
                             toggle={this.toggle}
                             collapsed={this.state.collapsed}
                             user={auth.data || {}}
+                            setAlitaState={this.props.setAlitaState}
                         />
                         <Content style={{ margin: '0 16px', overflow: 'initial', flex: '1 1 0' }}>
                             <Routes auth={auth} />
                         </Content>
                         <Footer style={{ textAlign: 'center' }}>
-                            React-Admin ©{new Date().getFullYear()} Created by 865470087@qq.com
+                            MSharp-Admin ©{new Date().getFullYear()} Created by guoxiaohan@rjmart.cn
                         </Footer>
                     </Layout>
                 </Layout>

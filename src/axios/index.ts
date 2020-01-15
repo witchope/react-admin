@@ -43,3 +43,52 @@ export const gitOauthInfo = (access_token: string) =>
 export const admin = () => get({ url: config.MOCK_AUTH_ADMIN });
 // 访问权限获取
 export const guest = () => get({ url: config.MOCK_AUTH_VISITOR });
+
+const LOGIN_URL = '/msharp-admin/login';
+const APP_KEY_URL = '/pearl-server/pearl/app/name/list';
+const LOGOUT_URL = '/msharp-admin/logout';
+const SVC_LIST_URL = '/msharp-admin/registry/pageList';
+
+export const signin = ({username, password}: any) => {
+    return post({
+        url: LOGIN_URL + `?userName=${username}&password=${password}`,
+    });
+};
+
+export const getAppkeys = (token: string) => {
+    return post({
+        url: APP_KEY_URL + `?token=${token}`,
+        config: {
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'token': token,
+            },
+            withCredentials: true
+        }
+    });
+};
+
+export const logout = () => {
+    return post({
+        url: LOGOUT_URL,
+        config: {
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            withCredentials: true
+        }
+    });
+};
+
+export const svcList = ({pageNo = 0, pageSize = 10, appkey = '', env = '', _ = '1578968456453'}) => {
+    return post({
+        url: SVC_LIST_URL + `?start=${pageNo}&length=${pageSize}&appkey=${appkey}&env=${env}&_=${_}`,
+        config: {
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            withCredentials: true
+        }
+    });
+};
+

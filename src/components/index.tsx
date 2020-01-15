@@ -29,6 +29,7 @@ import MapUi from './ui/map';
 import QueryParams from './extension/QueryParams';
 import Visitor from './extension/Visitor';
 import MultipleMenu from './extension/MultipleMenu';
+import ServiceRegister from './svc/ServiceRegister';
 
 const WysiwygBundle = Loadable({
     // 按需加载富文本配置
@@ -41,6 +42,7 @@ export default {
     BasicTable,
     AdvancedTable,
     AsynchronousTable,
+    ServiceRegister,
     Echarts,
     Recharts,
     Icons,
