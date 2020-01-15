@@ -1,6 +1,6 @@
-import React from "react";
-import {Col, Form, Input, Modal, Pagination, Row} from "antd";
-import {FormProps} from "antd/lib/form";
+import React from 'react';
+import { Col, Form, Input, Modal, Pagination, Row } from 'antd';
+import { FormProps } from 'antd/lib/form';
 
 type ModalProps = {
     info: any;
@@ -18,34 +18,34 @@ class InfoModal extends React.Component<ModalProps, any> {
     }
 
     componentDidUpdate(prevProps: Readonly<ModalProps>, prevState: Readonly<any>, snapshot?: any): void {
-        const {info} = this.props;
+        const { info } = this.props;
 
         if (info && prevProps.info !== info) {
-            const {info: data = "[]"} = info.data;
+            const { info: data = '[]' } = info.data;
             const arr = JSON.parse(data);
             if (arr.length > 0) {
                 this.setState(() => {
                     return {
                         modalData: arr,
-                    }
+                    };
                 });
             }
         }
     }
 
     close = () => {
-        const {closeInfoModal} = this.props;
+        const { closeInfoModal } = this.props;
         this.setState(() => {
             return {
                 modalData: [],
-            }
+            };
         });
-        closeInfoModal("[]");
+        closeInfoModal('[]');
     };
 
     handleSubmit = (e: any) => {
         e.preventDefault();
-        const {form} = this.props;
+        const { form } = this.props;
 
         form!.validateFieldsAndScroll((err, values) => {
             if (!err) {
@@ -57,29 +57,29 @@ class InfoModal extends React.Component<ModalProps, any> {
     changePage = (page: number) => {
         this.setState(() => {
             return {
-                current: page
-            }
-        })
+                current: page,
+            };
+        });
     };
 
     render() {
         // const {getFieldDecorator, setFieldsValue} = this.props.form!;
-        const {modalData, current} = this.state;
-        const {info} = this.props;
+        const { modalData, current } = this.state;
+        const { info } = this.props;
 
         let visible = false;
         if (info && info.data && info.data.visible) {
-            visible = info.data.visible
+            visible = info.data.visible;
         }
 
         const formItemLayout = {
             labelCol: {
-                xs: {span: 24},
-                sm: {span: 4},
+                xs: { span: 24 },
+                sm: { span: 4 },
             },
             wrapperCol: {
-                xs: {span: 24},
-                sm: {span: 20},
+                xs: { span: 24 },
+                sm: { span: 20 },
             },
         };
 

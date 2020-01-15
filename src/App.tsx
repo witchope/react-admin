@@ -21,6 +21,7 @@ class App extends Component<AppProps> {
         collapsed: false,
         title: '',
     };
+
     componentWillMount() {
         const { setAlitaState } = this.props;
         let user,
@@ -36,6 +37,7 @@ class App extends Component<AppProps> {
             this.getClientWidth();
         };
     }
+
     componentDidMount() {
         const openNotification = () => {
             notification.open({
@@ -64,7 +66,7 @@ class App extends Component<AppProps> {
                         </p>
                     </div>
                 ),
-                icon: <Icon type="smile-circle" style={{ color: 'red' }} />,
+                icon: <Icon type="smile-circle" style={{ color: 'red' }}/>,
                 duration: 0,
             });
             localStorage.setItem('isFirst', JSON.stringify(true));
@@ -75,6 +77,7 @@ class App extends Component<AppProps> {
             !isFirst && openNotification();
         }
     }
+
     getClientWidth = () => {
         // 获取当前浏览器宽度并设置responsive管理响应式
         const { setAlitaState } = this.props;
@@ -88,6 +91,7 @@ class App extends Component<AppProps> {
             collapsed: !this.state.collapsed,
         });
     };
+
     render() {
         const { title } = this.state;
         const { auth = { data: {} }, responsive = { data: {} } } = this.props;
@@ -95,9 +99,9 @@ class App extends Component<AppProps> {
             <DocumentTitle title={title}>
                 <Layout>
                     {!responsive.data.isMobile && checkLogin(auth.data.permissions) && (
-                        <SiderCustom collapsed={this.state.collapsed} />
+                        <SiderCustom collapsed={this.state.collapsed}/>
                     )}
-                    <ThemePicker />
+                    <ThemePicker/>
                     <Layout style={{ flexDirection: 'column' }}>
                         <HeaderCustom
                             toggle={this.toggle}
@@ -106,7 +110,7 @@ class App extends Component<AppProps> {
                             setAlitaState={this.props.setAlitaState}
                         />
                         <Content style={{ margin: '0 16px', overflow: 'initial', flex: '1 1 0' }}>
-                            <Routes auth={auth} />
+                            <Routes auth={auth}/>
                         </Content>
                         <Footer style={{ textAlign: 'center' }}>
                             MSharp-Admin ©{new Date().getFullYear()} Created by guoxiaohan@rjmart.cn

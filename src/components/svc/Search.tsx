@@ -1,6 +1,6 @@
 import React from 'react';
-import {Select, Col, Row, Form, Button} from "antd";
-import {FormProps} from "antd/lib/form";
+import { Select, Col, Row, Form, Button } from 'antd';
+import { FormProps } from 'antd/lib/form';
 
 type SearchProps = {
     appKeys: any,
@@ -11,12 +11,12 @@ type SearchProps = {
 class Search extends React.Component<SearchProps> {
 
     addOption = (x: any) => {
-        return <Select.Option key={x}>{x}</Select.Option>
+        return <Select.Option key={x}>{x}</Select.Option>;
     };
 
     handleSubmit = (e: any) => {
         e.preventDefault();
-        const {form, submit} = this.props;
+        const { form, submit } = this.props;
 
         form!.validateFieldsAndScroll((err, values) => {
             if (!err) {
@@ -27,29 +27,29 @@ class Search extends React.Component<SearchProps> {
     };
 
     render() {
-        const {getFieldDecorator} = this.props.form!;
-        const {appKeys} = this.props;
+        const { getFieldDecorator } = this.props.form!;
+        const { appKeys } = this.props;
 
         let appKeyOptions = '';
 
         if (appKeys && appKeys.data && appKeys.data.data && !(appKeys.isFetching)) {
-            appKeyOptions = appKeys.data.data.map(this.addOption)
+            appKeyOptions = appKeys.data.data.map(this.addOption);
         }
 
         const formItemLayout = {
             labelCol: {
-                xs: {span: 24},
-                sm: {span: 4},
+                xs: { span: 24 },
+                sm: { span: 4 },
             },
             wrapperCol: {
-                xs: {span: 24},
-                sm: {span: 20},
+                xs: { span: 24 },
+                sm: { span: 20 },
             },
         };
 
         const colLayout = {
-            xs: {span: 24},
-            sm: {span: 6},
+            xs: { span: 24 },
+            sm: { span: 6 },
         };
 
         return (

@@ -1,10 +1,10 @@
 import React from 'react';
-import {Button, Table, Tag, Tooltip} from 'antd';
-import {ColumnProps} from 'antd/lib/table';
+import { Button, Table, Tag, Tooltip } from 'antd';
+import { ColumnProps } from 'antd/lib/table';
 
 const columns: ColumnProps<any>[] = [
     // {title: 'ID', width: 100, dataIndex: 'id', key: 'id', fixed: 'left'},
-    {title: '应用（AppKey）', width: 200, dataIndex: 'appkey', key: 'appkey', fixed: "left"},
+    { title: '应用（AppKey）', width: 200, dataIndex: 'appkey', key: 'appkey', fixed: 'left' },
     {
         title: '环境（ENV）',
         dataIndex: 'env',
@@ -14,23 +14,23 @@ const columns: ColumnProps<any>[] = [
             let color = 'geekblue';
             switch (x) {
                 case 'uat':
-                    color = "purple";
+                    color = 'purple';
                     break;
                 case 'test':
-                    color = "volcano";
+                    color = 'volcano';
                     break;
 
             }
-            return <Tag color={color}>{x.toUpperCase()}</Tag>
-        }
+            return <Tag color={color}>{x.toUpperCase()}</Tag>;
+        },
     },
     {
         title: '服务（ServiceName）',
         dataIndex: 'serviceName',
         key: '2',
         render: (x: any) => {
-            return <span style={{color: "#313653"}}>{x}</span>
-        }
+            return <span style={{ color: '#313653' }}>{x}</span>;
+        },
     },
     {
         title: '版本',
@@ -38,9 +38,9 @@ const columns: ColumnProps<any>[] = [
         dataIndex: 'version',
         key: '3',
         render: (x: any) => {
-            const text = x.length > 10 ? x.substr(0, 9) + "..." : x;
+            const text = x.length > 10 ? x.substr(0, 9) + '...' : x;
             return (<Tooltip title={x}><span>{text}</span></Tooltip>);
-        }
+        },
     },
     {
         title: '状态',
@@ -64,7 +64,7 @@ const columns: ColumnProps<any>[] = [
                     break;
             }
             return text;
-        }
+        },
     },
     {
         title: '操作',
@@ -83,6 +83,7 @@ const columns: ColumnProps<any>[] = [
 
 type TableProps = {
     data: any;
+    responsive: any;
     showInfoModal: (param: any) => void;
 }
 
@@ -92,25 +93,32 @@ class ServiceTable extends React.Component<TableProps, any> {
         super(props);
         this.state = {
             total: 0,
-        }
+        };
     }
 
     componentDidUpdate(prevProps: Readonly<TableProps>, prevState: Readonly<any>, snapshot?: any): void {
-        const {recordsTotal} = this.props.data.data;
-        debugger;
+        const { recordsTotal } = this.props.data.data;
         if (recordsTotal > 0 && recordsTotal !== prevProps.data.data.recordsTotal) {
             this.setState(() => {
                 return {
-                    total: recordsTotal
-                }
+                    total: recordsTotal,
+                };
             });
         }
 
     }
 
     render() {
-        const {data, showInfoModal} = this.props;
-        const {total} = this.state;
+        const { data, showInfoModal, responsive } = this.props;
+        const { total } = this.state;
+
+        if (responsive.data.isMobile) {
+            columns[0].fixed = false;
+            columns[5].fixed = false;
+        } else {
+            columns[0].fixed = 'left';
+            columns[5].fixed = 'right';
+        }
 
         let source = [];
 
@@ -125,11 +133,11 @@ class ServiceTable extends React.Component<TableProps, any> {
                 dataSource={source}
                 pagination={
                     {
-                        total
+                        total,
                     }
                 }
                 bordered
-                scroll={{x: 1300}}
+                scroll={{ x: 1300 }}
                 rowKey={((record) => record.id)}
                 onRow={record => {
                     return {
