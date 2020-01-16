@@ -6,6 +6,7 @@ import { FormProps } from 'antd/lib/form';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { loginAction } from '../../modules/login'
+import { log } from 'util';
 
 const FormItem = Form.Item;
 
@@ -47,24 +48,24 @@ class Login extends React.Component<LoginProps, any> {
         }
 
         // if (nextAuth.data && this.state.loginTimes > 0 && this.state.loginTimes !== prevState.loginTimes) {
-        if (nextAuth.data && this.state.loginTimes > 0 && this.state.loginTimes !== prevState.loginTimes) {
-            if (nextAuth.data.code === 200) {
-                const user = {
-                    uid: 1,
-                    permissions: ['auth', 'auth/testPage', 'auth/authPage', 'auth/authPage/edit', 'auth/authPage/visit'],
-                    role: '系统管理员',
-                    roleType: 1,
-                    userName: '开发者',
-                };
-
-                // const { setAlitaState } = this.props;
-                //
-                // setAlitaState({ stateName: 'auth', data: user });
-
-            } else if (nextAuth.data.code === 500) {
-                message.error(nextAuth.data.msg);
-            }
-        }
+        // if (nextAuth.data && this.state.loginTimes > 0 && this.state.loginTimes !== prevState.loginTimes) {
+        //     if (nextAuth.data.code === 200) {
+        //         const user = {
+        //             uid: 1,
+        //             permissions: ['auth', 'auth/testPage', 'auth/authPage', 'auth/authPage/edit', 'auth/authPage/visit'],
+        //             role: '系统管理员',
+        //             roleType: 1,
+        //             userName: '开发者',
+        //         };
+        //
+        //         // const { setAlitaState } = this.props;
+        //         //
+        //         // setAlitaState({ stateName: 'auth', data: user });
+        //
+        //     } else if (nextAuth.data.code === 500) {
+        //         message.error(nextAuth.data.msg);
+        //     }
+        // }
     }
 
     handleSubmit = (e: React.FormEvent) => {
@@ -78,6 +79,7 @@ class Login extends React.Component<LoginProps, any> {
                 const { loginTimes } = this.state;
 
                 if (userName) {
+                    debugger;
                     login({ userName, password });
 
                     this.setState({
@@ -94,6 +96,8 @@ class Login extends React.Component<LoginProps, any> {
             loginSuccess,
             auth,
         } = this.props;
+
+        console.log(this.props.loginSuccess);
 
         debugger;
 
@@ -150,8 +154,8 @@ class Login extends React.Component<LoginProps, any> {
     }
 }
 
-const mapStateToProps = (state: any) => {
-    return { ...(state.login) }
+const mapStateToProps = ({ login }: any) => {
+    return { ...login };
 };
 
 const mapDispatchToProps = (dispatch: any) => {
