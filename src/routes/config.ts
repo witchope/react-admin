@@ -21,7 +21,7 @@ const menus: {
 } = {
     menus: [
         // 菜单相关路由
-        { key: '/app/dashboard/index', title: '首页', icon: 'mobile', component: 'Dashboard' },
+        // { key: '/app/dashboard/index', title: '首页', icon: 'mobile', component: 'Dashboard' },
         // {
         //     key: '/app/ui',
         //     title: 'UI',
@@ -71,14 +71,14 @@ const menus: {
         //         },
         //     ],
         // },
-        {
-            key: '/app/service/register',
-            title: '服务注册',
-            icon: 'area-chart',
-            subs: [
-                { key: '/app/svc/reg', title: '注册详情', component: 'ServiceRegister' }
-            ],
-        },
+        // {
+        //     key: '/app/service/register',
+        //     title: '服务注册',
+        //     icon: 'area-chart',
+        //     subs: [
+        //         { key: '/app/svc/reg', title: '注册详情', component: 'ServiceRegister' }
+        //     ],
+        // },
         // {
         //     key: '/app/form',
         //     title: '表单',

@@ -1,21 +1,27 @@
-/**
- * Created by hao.cheng on 2017/4/16.
- */
 import React from 'react';
 import { Form, Icon, Input, Button, Checkbox, message } from 'antd';
 import { PwaInstaller } from '../widget';
-import { connectAlita } from 'redux-alita';
 import { RouteComponentProps } from 'react-router';
 import { FormProps } from 'antd/lib/form';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { loginAction } from '../../modules/login'
 
 const FormItem = Form.Item;
 
+/**
+ * Props
+ */
 type LoginProps = {
-    setAlitaState: (param: any) => void;
+    login: (param: any) => void;
     auth: any;
-} & RouteComponentProps &
-    FormProps;
+    loginSuccess: boolean;
+} & RouteComponentProps & FormProps;
 
+/**
+ * @author maxwell
+ * @description login page component
+ */
 class Login extends React.Component<LoginProps, any> {
 
     constructor(props: LoginProps) {
@@ -26,21 +32,21 @@ class Login extends React.Component<LoginProps, any> {
     }
 
     componentDidMount() {
-        const { setAlitaState } = this.props;
-        setAlitaState({ stateName: 'auth', data: null });
+        // const { setAlitaState } = this.props;
+        // setAlitaState({ stateName: 'auth', data: null });
     }
 
     componentDidUpdate(prevProps: LoginProps, prevState: any) {
+        debugger;
         // React 16.3+弃用componentWillReceiveProps
         const { auth: nextAuth = {}, history } = this.props;
-        // const { history } = this.props;
         if (nextAuth.data && nextAuth.data.uid) {
-            // 判断是否登陆
+            //判断是否登陆
             localStorage.setItem('user', JSON.stringify(nextAuth.data));
             history.push('/');
         }
 
-        debugger
+        // if (nextAuth.data && this.state.loginTimes > 0 && this.state.loginTimes !== prevState.loginTimes) {
         if (nextAuth.data && this.state.loginTimes > 0 && this.state.loginTimes !== prevState.loginTimes) {
             if (nextAuth.data.code === 200) {
                 const user = {
@@ -51,9 +57,10 @@ class Login extends React.Component<LoginProps, any> {
                     userName: '开发者',
                 };
 
-                const { setAlitaState } = this.props;
+                // const { setAlitaState } = this.props;
+                //
+                // setAlitaState({ stateName: 'auth', data: user });
 
-                setAlitaState({ stateName: 'auth', data: user });
             } else if (nextAuth.data.code === 500) {
                 message.error(nextAuth.data.msg);
             }
@@ -62,20 +69,17 @@ class Login extends React.Component<LoginProps, any> {
 
     handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
+        const { login } = this.props;
         this.props.form!.validateFields((err, values) => {
             if (!err) {
+                const { userName, password } = values;
                 console.log('Received values of form: ', values);
-                const { setAlitaState } = this.props;
+
                 const { loginTimes } = this.state;
-                if (values.userName) {
-                    setAlitaState({
-                        funcName: 'signin',
-                        params: {
-                            username: values.userName,
-                            password: values.password,
-                        },
-                        stateName: 'auth',
-                    });
+
+                if (userName) {
+                    login({ userName, password });
+
                     this.setState({
                         loginTimes: loginTimes + 1,
                     });
@@ -86,6 +90,10 @@ class Login extends React.Component<LoginProps, any> {
 
     render() {
         const { getFieldDecorator } = this.props.form!;
+        const {
+            loginSuccess,
+            auth,
+        } = this.props;
 
         debugger;
 
@@ -142,4 +150,15 @@ class Login extends React.Component<LoginProps, any> {
     }
 }
 
-export default connectAlita(['auth'])(Form.create()(Login));
+const mapStateToProps = (state: any) => {
+    return { ...(state.login) }
+};
+
+const mapDispatchToProps = (dispatch: any) => {
+    return bindActionCreators({
+        login: loginAction.logging
+    }, dispatch);
+};
+
+export const CLogin = connect(mapStateToProps, mapDispatchToProps)(Form.create()(Login));
+

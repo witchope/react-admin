@@ -10,7 +10,7 @@ import { gitOauthToken, gitOauthInfo } from '../axios';
 import { queryString } from '../utils';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { PwaInstaller } from './widget';
-import { connectAlita } from 'redux-alita';
+// import { connectAlita } from 'redux-alita';
 
 const { Header } = Layout;
 const SubMenu = Menu.SubMenu;
@@ -142,9 +142,13 @@ class HeaderCustom extends Component<HeaderCustomProps, HeaderCustomState> {
 }
 
 // 重新设置连接之后组件的关联类型
+// const HeaderCustomConnect: React.ComponentClass<
+//     HeaderCustomProps,
+//     HeaderCustomState
+// > = connectAlita(['responsive'])(HeaderCustom);
 const HeaderCustomConnect: React.ComponentClass<
     HeaderCustomProps,
     HeaderCustomState
-> = connectAlita(['responsive'])(HeaderCustom);
+    > = HeaderCustom;
 
 export default withRouter(HeaderCustomConnect);

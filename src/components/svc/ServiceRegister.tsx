@@ -4,7 +4,7 @@ import { Card, Col, Modal, Row } from 'antd';
 import SvcTable from './Table';
 import { CSearch } from './Search';
 import { CInfoModal } from './InfoModal';
-import { connectAlita } from 'redux-alita';
+// import { connectAlita } from 'redux-alita';
 import { FormProps } from 'antd/lib/form';
 
 type SvcRegProps = {
@@ -94,4 +94,5 @@ class ServiceRegister extends React.Component<SvcRegProps, any> {
     }
 }
 
-export default connectAlita(['responsive', 'appKeys', 'tableSource', 'info'])(ServiceRegister);
+// export default connectAlita(['responsive', 'appKeys', 'tableSource', 'info'])(ServiceRegister);
+export default ServiceRegister;

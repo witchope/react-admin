@@ -1,15 +1,16 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import {Provider} from 'react-redux'
 import * as serviceWorker from './serviceWorker';
 import Page from './Page';
 import * as apis from './axios';
-// import { AppContainer } from 'react-hot-loader';
-import { AlitaProvider, setConfig } from 'redux-alita';
+// import { AlitaProvider, setConfig } from 'redux-alita';
 import './style/lib/animate.css';
 import './style/antd/index.less';
 import './style/index.less';
+import configureStore from "./store";
 
-setConfig(apis);
+// setConfig(apis);
 // const render = Component => { // 增加react-hot-loader保持状态刷新操作，如果不需要可去掉并把下面注释的打开
 //     ReactDOM.render(
 //         <AppContainer>
@@ -44,11 +45,10 @@ setConfig(apis);
 // }
 
 ReactDOM.render(
-    // <AppContainer>
-    <AlitaProvider>
+    <Provider store={configureStore()}>
         <Page />
-    </AlitaProvider>,
-    // </AppContainer>
+    </Provider>
+    ,
     document.getElementById('root')
 );
 // If you want your app to work offline and load faster, you can change
