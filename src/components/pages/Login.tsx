@@ -1,12 +1,11 @@
 import React from 'react';
-import { Form, Icon, Input, Button, Checkbox, message } from 'antd';
+import { Form, Icon, Input, Button, Checkbox } from 'antd';
 import { PwaInstaller } from '../widget';
 import { RouteComponentProps } from 'react-router';
 import { FormProps } from 'antd/lib/form';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { loginAction } from '../../modules/login'
-import { log } from 'util';
+import { loginAction } from '../../redux/login'
 
 const FormItem = Form.Item;
 
@@ -14,9 +13,10 @@ const FormItem = Form.Item;
  * Props
  */
 type LoginProps = {
-    login: (param: any) => void;
     auth: any;
     loginSuccess: boolean;
+    login: (param: any) => void;
+    rmAuth: () => void;
 } & RouteComponentProps & FormProps;
 
 /**
@@ -33,39 +33,17 @@ class Login extends React.Component<LoginProps, any> {
     }
 
     componentDidMount() {
-        // const { setAlitaState } = this.props;
-        // setAlitaState({ stateName: 'auth', data: null });
+        this.props.rmAuth();
     }
 
     componentDidUpdate(prevProps: LoginProps, prevState: any) {
-        debugger;
         // React 16.3+弃用componentWillReceiveProps
         const { auth: nextAuth = {}, history } = this.props;
-        if (nextAuth.data && nextAuth.data.uid) {
+        if (nextAuth && nextAuth.uid) {
             //判断是否登陆
-            localStorage.setItem('user', JSON.stringify(nextAuth.data));
+            localStorage.setItem('user', JSON.stringify(nextAuth));
             history.push('/');
         }
-
-        // if (nextAuth.data && this.state.loginTimes > 0 && this.state.loginTimes !== prevState.loginTimes) {
-        // if (nextAuth.data && this.state.loginTimes > 0 && this.state.loginTimes !== prevState.loginTimes) {
-        //     if (nextAuth.data.code === 200) {
-        //         const user = {
-        //             uid: 1,
-        //             permissions: ['auth', 'auth/testPage', 'auth/authPage', 'auth/authPage/edit', 'auth/authPage/visit'],
-        //             role: '系统管理员',
-        //             roleType: 1,
-        //             userName: '开发者',
-        //         };
-        //
-        //         // const { setAlitaState } = this.props;
-        //         //
-        //         // setAlitaState({ stateName: 'auth', data: user });
-        //
-        //     } else if (nextAuth.data.code === 500) {
-        //         message.error(nextAuth.data.msg);
-        //     }
-        // }
     }
 
     handleSubmit = (e: React.FormEvent) => {
@@ -79,7 +57,6 @@ class Login extends React.Component<LoginProps, any> {
                 const { loginTimes } = this.state;
 
                 if (userName) {
-                    debugger;
                     login({ userName, password });
 
                     this.setState({
@@ -92,14 +69,8 @@ class Login extends React.Component<LoginProps, any> {
 
     render() {
         const { getFieldDecorator } = this.props.form!;
-        const {
-            loginSuccess,
-            auth,
-        } = this.props;
 
-        console.log(this.props.loginSuccess);
-
-        debugger;
+        console.log("loginSuccess: " + this.props.loginSuccess);
 
         return (
             <div className="login">
@@ -154,13 +125,15 @@ class Login extends React.Component<LoginProps, any> {
     }
 }
 
-const mapStateToProps = ({ login }: any) => {
+const mapStateToProps = (state: any) => {
+    const { login } = state;
     return { ...login };
 };
 
 const mapDispatchToProps = (dispatch: any) => {
     return bindActionCreators({
-        login: loginAction.logging
+        login: loginAction.logging,
+        rmAuth: loginAction.rmAuth,
     }, dispatch);
 };
 

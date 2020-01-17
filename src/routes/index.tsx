@@ -1,6 +1,3 @@
-/**
- * Created by 叶子 on 2017/8/13.
- */
 import React, { Component } from 'react';
 import { Route, Redirect, Switch } from 'react-router-dom';
 import DocumentTitle from 'react-document-title';
@@ -16,15 +13,16 @@ type CRouterProps = {
 export default class CRouter extends Component<CRouterProps> {
     getPermits = (): any[] | null => {
         const { auth } = this.props;
-        return auth ? auth.data.permissions : null;
+        return auth ? auth.permissions : null;
     };
 
     requireAuth = (permit: any, component: React.ReactElement) => {
         const permits = this.getPermits();
-        // const { auth } = store.getState().httpData;
+        // const { auth } = store.getState().http;
         if (!permits || !permits.includes(permit)) return <Redirect to={'404'} />;
         return component;
     };
+
     requireLogin = (component: React.ReactElement, permit: any) => {
         const permits = this.getPermits();
         if (!checkLogin(permits)) {

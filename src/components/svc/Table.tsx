@@ -82,7 +82,7 @@ const columns: ColumnProps<any>[] = [
 ];
 
 type TableProps = {
-    data: any;
+    tableSource: any;
     responsive: any;
     showInfoModal: (param: any) => void;
 }
@@ -97,19 +97,19 @@ class ServiceTable extends React.Component<TableProps, any> {
     }
 
     componentDidUpdate(prevProps: Readonly<TableProps>, prevState: Readonly<any>, snapshot?: any): void {
-        const { recordsTotal } = this.props.data.data;
-        if (recordsTotal > 0 && recordsTotal !== prevProps.data.data.recordsTotal) {
-            this.setState(() => {
-                return {
-                    total: recordsTotal,
-                };
-            });
-        }
+        // const { recordsTotal } = this.props.tableSource;
+        // if (recordsTotal > 0 && recordsTotal !== prevProps.data.data.recordsTotal) {
+        //     this.setState(() => {
+        //         return {
+        //             total: recordsTotal,
+        //         };
+        //     });
+        // }
 
     }
 
     render() {
-        const { data, showInfoModal, responsive } = this.props;
+        const { tableSource, showInfoModal, responsive } = this.props;
         const { total } = this.state;
 
         if (responsive.data.isMobile) {
@@ -122,15 +122,10 @@ class ServiceTable extends React.Component<TableProps, any> {
 
         let source = [];
 
-        if (data && data.data && data.data.data && !(data.isFetching)) {
-            source = data.data.data;
-        }
-
         return (
             <Table
-                loading={data.isFetching}
                 columns={columns}
-                dataSource={source}
+                dataSource={tableSource}
                 pagination={
                     {
                         total,

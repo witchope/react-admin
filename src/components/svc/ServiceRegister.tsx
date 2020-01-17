@@ -4,52 +4,56 @@ import { Card, Col, Modal, Row } from 'antd';
 import SvcTable from './Table';
 import { CSearch } from './Search';
 import { CInfoModal } from './InfoModal';
-// import { connectAlita } from 'redux-alita';
 import { FormProps } from 'antd/lib/form';
+import { bindActionCreators } from "redux";
+import { connect } from "react-redux";
+import { svcAction } from "../../redux/svc";
 
 type SvcRegProps = {
-    setAlitaState: (param: any) => void;
+    // setAlitaState: (param: any) => void;
     appKeys: any;
     tableSource: any[];
     info: any;
     visible: boolean;
     responsive: any;
+    fetchAppKeys: (param: string) => void;
+    fetchTableSource: (param: any) => void;
 } & FormProps;
 
 
 class ServiceRegister extends React.Component<SvcRegProps, any> {
 
     componentDidMount(): void {
-        const { setAlitaState } = this.props;
+        const { fetchAppKeys, fetchTableSource } = this.props;
 
         let cookie = document.cookie;
 
         if (cookie) {
             let token = decodeURIComponent(cookie.split('=')[1]);
-            setAlitaState({ funcName: 'getAppkeys', params: token, stateName: 'appKeys' });
-            setAlitaState({ funcName: 'svcList', params: {}, stateName: 'tableSource' });
+            fetchAppKeys(token);
+            fetchTableSource({});
         }
     }
 
     render() {
 
+        debugger;
         const {
-            appKeys,
-            tableSource: data = [],
+            appKeys = [],
+            tableSource = [],
             info,
-            setAlitaState,
             responsive = { data: {} },
         } = this.props;
 
         const searchProps = {
             appKeys,
             submit(param: any) {
-                setAlitaState({ funcName: 'svcList', params: param, stateName: 'tableSource' });
+                // setAlitaState({ funcName: 'svcList', params: param, stateName: 'tableSource' });
             },
         };
 
         const tableProps = {
-            data,
+            tableSource,
             responsive,
             showInfoModal(param: any) {
                 if (param === '') {
@@ -58,14 +62,14 @@ class ServiceRegister extends React.Component<SvcRegProps, any> {
                         content: '重启服务或联系管理员',
                     });
                 }
-                setAlitaState({ stateName: 'info', data: { info: param, visible: true } });
+                // setAlitaState({ stateName: 'info', data: { info: param, visible: true } });
             },
         };
 
         const modalProps = {
             info,
             closeInfoModal(param: any) {
-                setAlitaState({ stateName: 'info', data: { info: param, visible: false } });
+                // setAlitaState({ stateName: 'info', data: { info: param, visible: false } });
             },
         };
 
@@ -94,5 +98,12 @@ class ServiceRegister extends React.Component<SvcRegProps, any> {
     }
 }
 
+const mapStateToProps = ({ svc }: any) => ({ ...svc });
+
+const mapDispatchToProps = (dispatch: any) => bindActionCreators({
+    fetchAppKeys: svcAction.fetchAppKeys,
+    fetchTableSource: svcAction.fetchTableSource
+}, dispatch);
+
 // export default connectAlita(['responsive', 'appKeys', 'tableSource', 'info'])(ServiceRegister);
-export default ServiceRegister;
+export default connect(mapStateToProps, mapDispatchToProps)(ServiceRegister);

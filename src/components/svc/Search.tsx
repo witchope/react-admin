@@ -30,10 +30,11 @@ class Search extends React.Component<SearchProps> {
         const { getFieldDecorator } = this.props.form!;
         const { appKeys } = this.props;
 
+        debugger;
         let appKeyOptions = '';
 
-        if (appKeys && appKeys.data && appKeys.data.data && !(appKeys.isFetching)) {
-            appKeyOptions = appKeys.data.data.map(this.addOption);
+        if (appKeys) {
+            appKeyOptions = appKeys.map(this.addOption);
         }
 
         const formItemLayout = {

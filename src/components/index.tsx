@@ -18,7 +18,7 @@ import Loading from './widget/Loading';
 // import Tabs from './ui/Tabs';
 // import Banners from './ui/banners';
 // import Drags from './ui/Draggable';
-// import Dashboard from './dashboard/Dashboard';
+import Dashboard from './dashboard/Dashboard';
 // import Gallery from './ui/Gallery';
 // import BasicAnimations from './animation/BasicAnimations';
 // import ExampleAnimations from './animation/ExampleAnimations';
@@ -29,7 +29,7 @@ import Loading from './widget/Loading';
 // import QueryParams from './extension/QueryParams';
 // import Visitor from './extension/Visitor';
 // import MultipleMenu from './extension/MultipleMenu';
-// import ServiceRegister from './svc/ServiceRegister';
+import ServiceRegister from './svc/ServiceRegister';
 
 const WysiwygBundle = Loadable({
     // 按需加载富文本配置
@@ -42,7 +42,7 @@ export default {
     // BasicTable,
     // AdvancedTable,
     // AsynchronousTable,
-    // ServiceRegister,
+    ServiceRegister,
     // Echarts,
     // Recharts,
     // Icons,
@@ -53,7 +53,7 @@ export default {
     // Tabs,
     // Banners,
     // Drags,
-    // Dashboard,
+    Dashboard,
     // Gallery,
     // BasicAnimations,
     // ExampleAnimations,

@@ -10,7 +10,6 @@ import { gitOauthToken, gitOauthInfo } from '../axios';
 import { queryString } from '../utils';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { PwaInstaller } from './widget';
-// import { connectAlita } from 'redux-alita';
 
 const { Header } = Layout;
 const SubMenu = Menu.SubMenu;
@@ -21,8 +20,9 @@ type HeaderCustomProps = RouteComponentProps<any> & {
     toggle: () => void;
     collapsed: boolean;
     user: any;
-    responsive?: any;
+    isMobile?: boolean;
     path?: string;
+    logout: () => void;
 };
 type HeaderCustomState = {
     user: any;
@@ -34,12 +34,14 @@ class HeaderCustom extends Component<HeaderCustomProps, HeaderCustomState> {
         user: '',
         visible: false,
     };
+
     componentDidMount() {
         const QueryString = queryString() as any;
         let _user,
             storageUser = localStorage.getItem('user');
 
         _user = (storageUser && JSON.parse(storageUser)) || '测试';
+
         if (!_user && QueryString.hasOwnProperty('code')) {
             gitOauthToken(QueryString.code).then((res: any) => {
                 gitOauthInfo(res.access_token).then((info: any) => {
@@ -55,34 +57,41 @@ class HeaderCustom extends Component<HeaderCustomProps, HeaderCustomState> {
             });
         }
     }
+
     screenFull = () => {
         if (screenfull.isEnabled) {
             screenfull.request();
         }
     };
+
     menuClick = (e: { key: string }) => {
         e.key === 'logout' && this.logout();
     };
+
     logout = () => {
-        const {setAlitaState} = this.props;
-        setAlitaState({funcName: 'logout' });
+        const { logout } = this.props;
+        logout();
         console.log(this.props);
         localStorage.removeItem('user');
         this.props.history.push('/login');
     };
+
     popoverHide = () => {
         this.setState({
             visible: false,
         });
     };
+
     handleVisibleChange = (visible: boolean) => {
         this.setState({ visible });
     };
+
     render() {
-        const { responsive = { data: {} } } = this.props;
+        const { isMobile } = this.props;
+
         return (
             <Header className="custom-theme header">
-                {responsive.data.isMobile ? (
+                {isMobile ? (
                     <Popover
                         content={<SiderCustom popoverHide={this.popoverHide} />}
                         trigger="click"
