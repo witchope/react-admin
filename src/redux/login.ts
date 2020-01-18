@@ -2,6 +2,7 @@ import { map, mergeMap } from 'rxjs/operators';
 import { ajax } from 'rxjs/ajax';
 import { ofType } from 'redux-observable';
 import { message } from 'antd';
+import { LOGIN_URL } from '../axios/config'
 
 enum ActionType {
     LOGGING,
@@ -30,12 +31,10 @@ export const loginAction = {
     }),
 };
 
-const LOGIN_URL = '/msharp-admin/login';
-
 export const loginEpic = (action$: any) => action$.pipe(
     ofType(ActionType.LOGGING),
     mergeMap(({ payload }) =>
-        ajax.post(LOGIN_URL + `?userName=${payload.userName}&password=${payload.password}`)
+        ajax.post(LOGIN_URL, {...payload})
             .pipe(
                 map(response => {
                     const { response: resp } = response;

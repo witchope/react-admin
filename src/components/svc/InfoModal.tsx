@@ -1,12 +1,11 @@
 import React from 'react';
 import { Col, Form, Input, Modal, Pagination, Row } from 'antd';
-import { FormProps } from 'antd/lib/form';
+import { ModalProps } from '../../types/svc';
 
-type ModalProps = {
-    info: any;
-    closeInfoModal: (param: any) => void;
-} & FormProps;
-
+/**
+ * @author maxwell
+ * @desc Information modal
+ */
 class InfoModal extends React.Component<ModalProps, any> {
 
     constructor(props: ModalProps) {
@@ -21,8 +20,7 @@ class InfoModal extends React.Component<ModalProps, any> {
         const { info } = this.props;
 
         if (info && prevProps.info !== info) {
-            const { info: data = '[]' } = info.data;
-            const arr = JSON.parse(data);
+            const arr = JSON.parse(info);
             if (arr.length > 0) {
                 this.setState(() => {
                     return {
@@ -65,12 +63,7 @@ class InfoModal extends React.Component<ModalProps, any> {
     render() {
         // const {getFieldDecorator, setFieldsValue} = this.props.form!;
         const { modalData, current } = this.state;
-        const { info } = this.props;
-
-        let visible = false;
-        if (info && info.data && info.data.visible) {
-            visible = info.data.visible;
-        }
+        const { visible } = this.props;
 
         const formItemLayout = {
             labelCol: {

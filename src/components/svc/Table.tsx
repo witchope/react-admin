@@ -1,6 +1,7 @@
 import React from 'react';
 import { Button, Table, Tag, Tooltip } from 'antd';
 import { ColumnProps } from 'antd/lib/table';
+import { TableProps, TableState } from '../../types/svc';
 
 const columns: ColumnProps<any>[] = [
     // {title: 'ID', width: 100, dataIndex: 'id', key: 'id', fixed: 'left'},
@@ -72,7 +73,7 @@ const columns: ColumnProps<any>[] = [
         width: 150,
         fixed: 'right',
         render: () => (
-            <span>
+                <span>
                 <Button type="primary" size="small">编辑</Button>
                 <Button type="default" size="small">删除</Button>
             </span>
@@ -81,13 +82,8 @@ const columns: ColumnProps<any>[] = [
     },
 ];
 
-type TableProps = {
-    tableSource: any;
-    responsive: any;
-    showInfoModal: (param: any) => void;
-}
 
-class ServiceTable extends React.Component<TableProps, any> {
+class ServiceTable extends React.Component<TableProps, TableState> {
 
     constructor(props: TableProps) {
         super(props);
@@ -97,8 +93,8 @@ class ServiceTable extends React.Component<TableProps, any> {
     }
 
     componentDidUpdate(prevProps: Readonly<TableProps>, prevState: Readonly<any>, snapshot?: any): void {
-        // const { recordsTotal } = this.props.tableSource;
-        // if (recordsTotal > 0 && recordsTotal !== prevProps.data.data.recordsTotal) {
+        // const { recordsTotal } = this.props;
+        // if (recordsTotal > 0 && recordsTotal !== prevProps.tableSource.data.recordsTotal) {
         //     this.setState(() => {
         //         return {
         //             total: recordsTotal,
@@ -109,10 +105,10 @@ class ServiceTable extends React.Component<TableProps, any> {
     }
 
     render() {
-        const { tableSource, showInfoModal, responsive } = this.props;
+        const { tableSource, showInfoModal, isMobile, isLoading } = this.props;
         const { total } = this.state;
 
-        if (responsive.data.isMobile) {
+        if (isMobile) {
             columns[0].fixed = false;
             columns[5].fixed = false;
         } else {
@@ -120,28 +116,25 @@ class ServiceTable extends React.Component<TableProps, any> {
             columns[5].fixed = 'right';
         }
 
-        let source = [];
-
         return (
-            <Table
-                columns={columns}
-                dataSource={tableSource}
-                pagination={
-                    {
-                        total,
-                    }
-                }
-                bordered
-                scroll={{ x: 1300 }}
-                rowKey={((record) => record.id)}
-                onRow={record => {
-                    return {
-                        onDoubleClick: () => {
-                            showInfoModal(record.data);
-                        },
-                    };
-                }}
-            />);
+                <Table
+                        loading={isLoading}
+                        columns={columns}
+                        dataSource={tableSource}
+                        pagination={{
+                            total,
+                        }}
+                        bordered
+                        scroll={{ x: 1300 }}
+                        rowKey={((record) => record.id)}
+                        onRow={record => {
+                            return {
+                                onDoubleClick: () => {
+                                    showInfoModal(record.data);
+                                },
+                            };
+                        }}
+                />);
     }
 }
 
