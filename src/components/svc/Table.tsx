@@ -93,20 +93,15 @@ class ServiceTable extends React.Component<TableProps, TableState> {
     }
 
     componentDidUpdate(prevProps: Readonly<TableProps>, prevState: Readonly<any>, snapshot?: any): void {
-        // const { recordsTotal } = this.props;
-        // if (recordsTotal > 0 && recordsTotal !== prevProps.tableSource.data.recordsTotal) {
-        //     this.setState(() => {
-        //         return {
-        //             total: recordsTotal,
-        //         };
-        //     });
-        // }
+        const { total } = this.props;
+        if (total > 0 && total !== prevProps.total) {
+            this.setState({ total });
+        }
 
     }
 
     render() {
-        const { tableSource, showInfoModal, isMobile, isLoading } = this.props;
-        const { total } = this.state;
+        const { total, tableSource, showInfoModal, isMobile, isLoading } = this.props;
 
         if (isMobile) {
             columns[0].fixed = false;
@@ -134,7 +129,8 @@ class ServiceTable extends React.Component<TableProps, TableState> {
                                 },
                             };
                         }}
-                />);
+                />
+        );
     }
 }
 

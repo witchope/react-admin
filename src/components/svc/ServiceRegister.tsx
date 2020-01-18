@@ -37,6 +37,7 @@ class ServiceRegister extends Component<SvcProps, any> {
             isLoading,
             isMobile,
             visible,
+            total,
 
             fetchTableSource,
             showModal,
@@ -51,11 +52,11 @@ class ServiceRegister extends Component<SvcProps, any> {
         };
 
         const tableProps: TableProps = {
+            total,
             tableSource,
             isMobile,
             isLoading,
             showInfoModal(param: any) {
-                debugger;
                 if (param === '') {
                     Modal.warning({
                         title: '服务已下线',

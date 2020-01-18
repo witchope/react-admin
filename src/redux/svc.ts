@@ -12,6 +12,7 @@ const initState: SvcState = {
     info: '',
     visible: false,
     isLoading: true,
+    total: 0,
 };
 
 //-------------------------Slice-------------------------
@@ -26,9 +27,11 @@ export const svcSlice = createSlice({
         APP_KEY_FAIL: state => {
             state.appKeys = [];
         },
-        TABLE_COMP: (state, action) => {
-            state.tableSource = action.payload;
-            state.isLoading = false
+        TABLE_COMP: (state, { payload: { total, tableSource } }) => {
+            state.tableSource = tableSource;
+            state.total = total;
+            state.isLoading = false;
+            // Object.assign(state, { total, tableSource })
         },
         MODAL_SHOW: (state, action) => {
             state.visible = true;
@@ -87,7 +90,10 @@ export const svcEpic: Epic[] = [
                 }).pipe(
                     map(response => {
                         const { response: resp } = response;
-                        const action = svcReducerAction.TABLE_COMP(resp.data);
+                        const action = svcReducerAction.TABLE_COMP({
+                            tableSource: resp.data,
+                            total: resp.recordsTotal,
+                        });
                         return { ...action };
                     }),
                 ),

@@ -8,6 +8,7 @@ export interface SvcState {
     tableSource: any[];
     info: string;
     visible: boolean;
+    total: number;
     isLoading: boolean;
 }
 
@@ -36,6 +37,7 @@ export type TableProps = {
     tableSource: any[];
     isLoading: boolean;
     isMobile: boolean;
+    total: number;
     showInfoModal: (param: any) => void;
 }
 

@@ -32,6 +32,10 @@ class App extends Component<AppProps, any> {
         user = storageUser && JSON.parse(storageUser);
         user && setAuth(user);
         this.getClientWidth();
+        const storageFirst = localStorage.getItem('isFirst');
+        if (!storageFirst) {
+            localStorage.setItem('isFirst', JSON.stringify(true));
+        }
         window.onresize = () => {
             console.log('屏幕变化了');
             this.getClientWidth();
@@ -39,23 +43,26 @@ class App extends Component<AppProps, any> {
     }
 
     componentDidMount() {
-        const openNotification = () => {
-            notification.open({
-                message: 'MSharp Admin',
-                description: (
-                        <div>欢迎加入锐竞<span role="img" aria-label="nerd">🤓</span>,一哩我哩 giao giao</div>
-                ),
-                icon: <Icon type="smile-circle" style={{ color: 'red' }} />,
-                duration: 0,
-            });
-            localStorage.setItem('isFirst', JSON.stringify(true));
-        };
+        debugger;
         const storageFirst = localStorage.getItem('isFirst');
         if (storageFirst) {
             const isFirst = JSON.parse(storageFirst);
-            !isFirst && openNotification();
+            isFirst && this.openNotification();
         }
     }
+
+    openNotification = () => {
+        debugger;
+        notification.open({
+            message: 'MSharp Admin',
+            description: (
+                    <div>欢迎加入锐竞<span role="img" aria-label="nerd">🤓</span>,一哩我哩 giao giao</div>
+            ),
+            icon: <Icon type="smile-circle" style={{ color: 'red' }} />,
+            duration: 0,
+        });
+        localStorage.setItem('isFirst', JSON.stringify(false));
+    };
 
     getClientWidth = () => {
         // 获取当前浏览器宽度并设置responsive管理响应式
