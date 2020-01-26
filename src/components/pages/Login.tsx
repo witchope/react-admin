@@ -1,29 +1,27 @@
 import React from 'react';
-import { Form, Icon, Input, Button, Checkbox } from 'antd';
-import { PwaInstaller } from '../widget';
-import { RouteComponentProps } from 'react-router';
-import { FormProps } from 'antd/lib/form';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
+import { bindActionCreators, Dispatch } from 'redux';
+import { Form, Icon, Input, Button, Checkbox } from 'antd';
+
+import { PwaInstaller } from '../widget';
 import { loginAction } from '../../redux/login'
+import { LoginProps, LoginState } from '../../types/login';
+import { RootState } from '../../redux/root';
 
 const FormItem = Form.Item;
 
-/**
- * Props
- */
-type LoginProps = {
-    auth: any;
-    loginSuccess: boolean;
-    login: (param: any) => void;
-    rmAuth: () => void;
-} & RouteComponentProps & FormProps;
+// type LoginProps = {
+//     auth: any;
+//     loginSuccess: boolean;
+//     login: (param: any) => void;
+//     rmAuth: () => void;
+// } & RouteComponentProps & FormProps;
 
 /**
  * @author maxwell
  * @description login page component
  */
-class Login extends React.Component<LoginProps, any> {
+class Login extends React.Component<LoginProps, LoginState> {
 
     constructor(props: LoginProps) {
         super(props);
@@ -125,12 +123,12 @@ class Login extends React.Component<LoginProps, any> {
     }
 }
 
-const mapStateToProps = (state: any) => {
+const mapStateToProps = (state: RootState) => {
     const { login } = state;
     return { ...login };
 };
 
-const mapDispatchToProps = (dispatch: any) => {
+const mapDispatchToProps = (dispatch: Dispatch) => {
     return bindActionCreators({
         login: loginAction.logging,
         rmAuth: loginAction.rmAuth,

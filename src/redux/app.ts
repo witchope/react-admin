@@ -1,36 +1,39 @@
-import { map, mergeMap } from 'rxjs/operators';
+import { filter, map, mergeMap } from 'rxjs/operators';
 import { ajax } from 'rxjs/ajax';
-import { ofType } from 'redux-observable';
+import { Epic } from 'redux-observable';
+import { createSlice, Draft } from '@reduxjs/toolkit';
+import { ReducerState } from '../types/app';
 
-enum ActionType {
-    WIDTH_UPD = 'WIDTH_UPD',
-    UPD_AUTH = 'UPD_AUTH',
-    LOGOUT = 'LOGOUT',
-    LOGOUT_FULFILLED = 'LOGOUT_FULFILLED',
-}
-
-export const appAction = {
-    windowChange: (payload: any) => ({
-        type: ActionType.WIDTH_UPD,
-        payload,
-    }),
-    updateAuth: (payload: any) => ({
-        type: ActionType.UPD_AUTH,
-        payload
-    }),
-    logout: () => ({
-        type: ActionType.LOGOUT,
-    }),
-    logoutFulfilled: () => ({
-        type: ActionType.LOGOUT_FULFILLED,
-    })
+const initialState: ReducerState = {
+    isMobile: false,
+    auth: {},
+    logoutSuccess: false,
 };
+
+export const appSlice = createSlice({
+    name: 'app',
+    initialState: initialState,
+    reducers: {
+        windowChange: (state: Draft<ReducerState>, { payload }) => {
+            state.isMobile = payload.isMobile || false;
+        },
+        updateAuth: (state: Draft<ReducerState>, { payload }) => {
+            state.auth = payload;
+        },
+        logout: (state: Draft<ReducerState>) => state,
+        logoutFulfilled: (state: Draft<ReducerState>) => {
+            state.logoutSuccess = false;
+        },
+    },
+});
+
+export const appAction = { ...(appSlice.actions) };
 
 const LOGOUT_URL = '/msharp-admin/logout';
 
-export const appEpic = (action$: any) => {
+export const appEpic: Epic = (action$: any) => {
     return action$.pipe(
-        ofType(ActionType.LOGOUT),
+        filter(appAction.logout.match),
         mergeMap(() =>
             ajax({
                 url: LOGOUT_URL,
@@ -40,23 +43,3 @@ export const appEpic = (action$: any) => {
     );
 };
 
-const initialState = {
-    isMobile: false,
-    auth: {},
-    logoutSuccess: false,
-};
-
-export const appReducer = (state: any = initialState, action: any) => {
-    switch (action.type) {
-        case ActionType.WIDTH_UPD:
-            const { payload: { isMobile = false } = {} } = action;
-            return { ...state, isMobile };
-        case ActionType.UPD_AUTH:
-            const { payload: auth } = action;
-            return { ...state, auth };
-        case ActionType.LOGOUT_FULFILLED:
-            return { ...state, logoutSuccess: true };
-        default:
-            return state;
-    }
-};

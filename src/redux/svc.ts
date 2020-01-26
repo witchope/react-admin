@@ -1,15 +1,17 @@
-import { Epic, ofType } from 'redux-observable';
-import { map, mergeMap } from 'rxjs/operators';
+import { Epic } from 'redux-observable';
+import { filter, map, mergeMap } from 'rxjs/operators';
 import { ajax } from 'rxjs/ajax';
-import { createAction, createSlice } from '@reduxjs/toolkit';
+import { createSlice, Draft, PayloadAction } from '@reduxjs/toolkit';
 
 import * as config from '../axios/config';
-import { SvcState } from '../types/svc';
+import { ReducerState } from '../types/svc';
 
-const initState: SvcState = {
+const initState: ReducerState = {
     appKeys: [],
     tableSource: [],
     info: '',
+    record: {},
+    editVisible: false,
     visible: false,
     isLoading: true,
     total: 0,
@@ -21,45 +23,46 @@ export const svcSlice = createSlice({
     name: 'svc',
     initialState: initState,
     reducers: {
-        APP_KEY_COMP: (state, action) => {
+        appKeyFulfilled: (state: Draft<ReducerState>, action: PayloadAction<any>) => {
             state.appKeys = action.payload;
         },
-        APP_KEY_FAIL: state => {
+        appKeyFailed: state => {
             state.appKeys = [];
         },
-        TABLE_COMP: (state, { payload: { total, tableSource } }) => {
+        tableFulfilled: (state: Draft<ReducerState>, { payload: { total, tableSource } }) => {
             state.tableSource = tableSource;
             state.total = total;
             state.isLoading = false;
-            // Object.assign(state, { total, tableSource })
         },
-        MODAL_SHOW: (state, action) => {
+        showModal: (state: Draft<ReducerState>, action: PayloadAction<any>) => {
             state.visible = true;
             state.info = action.payload;
         },
-        MODAL_CLOSE: (state, action) => {
-            state.visible = false;
-            state.info = action.payload;
+        showEditModal: (state: Draft<ReducerState>, { payload }) => {
+            state.editVisible = true;
+            state.record = payload;
         },
-        DEFAULT: state => state,
+        closeModal: (state: Draft<ReducerState>, action: PayloadAction<any>) => {
+            state.visible = false;
+            state.editVisible = false;
+        },
+        fetchTable: (state: Draft<ReducerState>, action: PayloadAction<any>) => {
+        },
+        fetchAppKeys: (state: Draft<ReducerState>, action: PayloadAction<any>) => {
+        },
     },
 });
 
 //-------------------------Action-------------------------
 
-export const svcReducerAction = { ...(svcSlice.actions) };
-
-export const svcEffectAction = {
-    fetchAppKeys: createAction('APP_KEY_FETCHING', (payload) => ({ payload })),
-    fetchTableSource: createAction('TABLE_FETCHING', (payload) => ({ payload })),
-};
+export const svcAction = { ...(svcSlice.actions) };
 
 //-------------------------Effect-------------------------
 
 export const svcEpic: Epic[] = [
     (action$) => {
         return action$.pipe(
-            ofType(svcEffectAction.fetchAppKeys),
+            filter(svcAction.fetchAppKeys.match),
             mergeMap((action) => {
                     return ajax.post(config.APP_KEY_URL, {}, {
                         'Content-Type': 'application/x-www-form-urlencoded',
@@ -68,10 +71,10 @@ export const svcEpic: Epic[] = [
                         map(response => {
                             const { response: resp } = response;
                             if (resp.code === 200) {
-                                const action = svcReducerAction.APP_KEY_COMP(resp.data);
+                                const action = svcAction.appKeyFulfilled(resp.data);
                                 return { ...action };
                             } else {
-                                const action = svcReducerAction.APP_KEY_FAIL();
+                                const action = svcAction.appKeyFailed();
                                 return { ...action };
                             }
                         }),
@@ -82,7 +85,7 @@ export const svcEpic: Epic[] = [
     },
 
     (action$) => action$.pipe(
-        ofType(svcEffectAction.fetchTableSource.type),
+        filter(svcAction.fetchTable.match),
         mergeMap(
             ({ payload: { pageNo: start = 1, pageSize: length = 10, appkey = '', env = '', _ = '1578968456453' } }) =>
                 ajax.post(config.SVC_LIST_URL, {
@@ -90,7 +93,7 @@ export const svcEpic: Epic[] = [
                 }).pipe(
                     map(response => {
                         const { response: resp } = response;
-                        const action = svcReducerAction.TABLE_COMP({
+                        const action = svcAction.tableFulfilled({
                             tableSource: resp.data,
                             total: resp.recordsTotal,
                         });

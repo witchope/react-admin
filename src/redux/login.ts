@@ -1,40 +1,41 @@
-import { map, mergeMap } from 'rxjs/operators';
+import { filter, map, mergeMap } from 'rxjs/operators';
 import { ajax } from 'rxjs/ajax';
-import { ofType } from 'redux-observable';
+import { Epic } from 'redux-observable';
 import { message } from 'antd';
-import { LOGIN_URL } from '../axios/config'
+import { LOGIN_URL } from '../axios/config';
+import { createSlice, Draft } from '@reduxjs/toolkit';
+import { ReducerState } from '../types/login';
 
-enum ActionType {
-    LOGGING,
-    LOGIN_ATTEMPT,
-    LOGIN_SUCCESS,
-    LOGIN_FAILED,
-    RM_AUTH
-}
-
-export const loginAction = {
-    logging: (payload: any) => {
-        return {
-            type: ActionType.LOGGING,
-            payload,
-        };
-    },
-    loginFulfilled: (payload: any) => ({
-        type: ActionType.LOGIN_SUCCESS,
-        payload,
-    }),
-    loginRefuse: () => ({
-        type: ActionType.LOGIN_FAILED,
-    }),
-    rmAuth: () => ({
-        type: ActionType.RM_AUTH,
-    }),
+const initState: ReducerState = {
+    loginSuccess: false,
+    auth: {},
 };
 
-export const loginEpic = (action$: any) => action$.pipe(
-    ofType(ActionType.LOGGING),
+export const loginSlice = createSlice({
+    name: 'login',
+    initialState: initState,
+    reducers: {
+        logging: (state: Draft<ReducerState>, action) => {
+        },
+        loginFulfilled: (state: Draft<ReducerState>, action) => {
+            state.auth = action.payload;
+            state.loginSuccess = true;
+        },
+        loginRefuse: (state: Draft<ReducerState>) => {
+            state.loginSuccess = false;
+        },
+        rmAuth: (state: Draft<ReducerState>) => {
+            state.auth = null;
+        },
+    },
+});
+
+export const loginAction = { ...(loginSlice.actions) };
+
+export const loginEpic: Epic = (action$: any) => action$.pipe(
+    filter(loginAction.logging.match),
     mergeMap(({ payload }) =>
-        ajax.post(LOGIN_URL, {...payload})
+        ajax.post(LOGIN_URL, { ...payload })
             .pipe(
                 map(response => {
                     const { response: resp } = response;
@@ -55,25 +56,4 @@ export const loginEpic = (action$: any) => action$.pipe(
                     }
                 })),
     ),
-    // mapTo({ type: ActionType.LOGIN_SUCCESS })
 );
-
-const initState = {
-    loginSuccess: false,
-    auth: {},
-};
-
-export const loginReducer = (state: any = initState, action: any) => {
-    switch (action.type) {
-        case ActionType.LOGIN_ATTEMPT:
-            return { ...state, ...action.payload };
-        case ActionType.LOGIN_SUCCESS:
-            return { ...state, auth: action.payload, loginSuccess: true };
-        case ActionType.LOGIN_FAILED:
-            return { ...state, loginSuccess: true };
-        case ActionType.RM_AUTH:
-            return { ...state, auth: null };
-        default:
-            return state;
-    }
-};

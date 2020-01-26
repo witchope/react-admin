@@ -3,28 +3,32 @@ import { FormProps } from 'antd/lib/form';
 /**
  * Svc types
  */
-export interface SvcState {
+export interface ReducerState {
     appKeys: any[];
     tableSource: any[];
+    record: object;
     info: string;
     visible: boolean;
+    editVisible: boolean;
     total: number;
     isLoading: boolean;
 }
 
-export interface StateProps extends SvcState {
-    // responsive: any;
-    isMobile: false;
+export interface StateProps extends ReducerState {
+    isMobile: boolean;
 }
 
 export interface DispatchProps {
     fetchAppKeys: any;
     fetchTableSource: any;
     showModal: any;
+    showEditModal: (param: any) => void;
     closeModal: any;
 }
 
 export type SvcProps = StateProps & DispatchProps & FormProps;
+
+export type SvcState = {};
 
 // sub component
 
@@ -39,6 +43,7 @@ export type TableProps = {
     isMobile: boolean;
     total: number;
     showInfoModal: (param: any) => void;
+    showEditModal: (param: any) => void;
 }
 
 export interface TableState {
@@ -48,5 +53,11 @@ export interface TableState {
 export type ModalProps = {
     info: string;
     visible: boolean;
-    closeInfoModal: (param: any) => void;
+    closeModal: () => void;
+} & FormProps;
+
+export type EditModalProps = {
+    record: any,
+    editVisible: boolean,
+    closeModal: () => void;
 } & FormProps;

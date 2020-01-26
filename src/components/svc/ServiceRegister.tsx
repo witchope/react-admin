@@ -7,15 +7,19 @@ import SvcTable from './Table';
 import { CSearch } from './Search';
 import { CInfoModal } from './InfoModal';
 import { connect } from 'react-redux';
-import { svcEffectAction, svcReducerAction } from '../../redux/svc';
-import { DispatchProps, ModalProps, SearchProps, StateProps, SvcProps, TableProps } from '../../types/svc';
+import { svcAction } from '../../redux/svc';
+import {
+    DispatchProps, EditModalProps, ModalProps, SearchProps,
+    StateProps, SvcProps, SvcState, TableProps,
+} from '../../types/svc';
 import { RootState } from '../../redux/root';
+import { CEditModal } from './EditModal';
 
 /**
  * @author maxwell
  * @desc service register route component
  */
-class ServiceRegister extends Component<SvcProps, any> {
+class ServiceRegister extends Component<SvcProps, SvcState> {
 
     componentDidMount(): void {
         const { fetchAppKeys, fetchTableSource } = this.props;
@@ -33,14 +37,17 @@ class ServiceRegister extends Component<SvcProps, any> {
         const {
             appKeys = [],
             tableSource = [],
+            record,
             info,
             isLoading,
             isMobile,
             visible,
+            editVisible,
             total,
 
             fetchTableSource,
             showModal,
+            showEditModal,
             closeModal,
         } = this.props;
 
@@ -63,22 +70,32 @@ class ServiceRegister extends Component<SvcProps, any> {
                         content: '重启服务或联系管理员',
                     });
                 }
-
                 showModal(param);
+            },
+            showEditModal(param: any) {
+                showEditModal(param);
             },
         };
 
         const modalProps: ModalProps = {
             info,
             visible,
-            closeInfoModal(param: any) {
-                closeModal(param);
+            closeModal() {
+                closeModal();
+            },
+        };
+
+        const editModalProps: EditModalProps = {
+            record,
+            editVisible,
+            closeModal() {
+                closeModal();
             },
         };
 
         return (
                 <div className="gutter-example">
-                    <BreadcrumbCustom first="服务注册" second="注册详情"/>
+                    <BreadcrumbCustom first="服务注册" second="注册详情" />
 
                     <Row gutter={16}>
                         <Col className="gutter-row" md={24}>
@@ -96,6 +113,7 @@ class ServiceRegister extends Component<SvcProps, any> {
                     </Row>
 
                     <CInfoModal {...modalProps} />
+                    <CEditModal {...editModalProps} />
                 </div>
         );
     }
@@ -108,10 +126,11 @@ const mapStateToProps = (state: RootState): StateProps => {
 
 const mapDispatchToProps = (dispatch: Dispatch): DispatchProps =>
         bindActionCreators({
-            ...svcEffectAction,
-            showModal: svcReducerAction.MODAL_SHOW,
-            closeModal: svcReducerAction.MODAL_CLOSE,
+            fetchAppKeys: svcAction.fetchAppKeys,
+            fetchTableSource: svcAction.fetchTable,
+            showModal: svcAction.showModal,
+            showEditModal: svcAction.showEditModal,
+            closeModal: svcAction.closeModal,
         }, dispatch);
 
-// export default connectAlita(['responsive', 'appKeys', 'tableSource', 'info'])(ServiceRegister);
 export default connect(mapStateToProps, mapDispatchToProps)(ServiceRegister);

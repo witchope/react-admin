@@ -3,85 +3,6 @@ import { Button, Table, Tag, Tooltip } from 'antd';
 import { ColumnProps } from 'antd/lib/table';
 import { TableProps, TableState } from '../../types/svc';
 
-const columns: ColumnProps<any>[] = [
-    // {title: 'ID', width: 100, dataIndex: 'id', key: 'id', fixed: 'left'},
-    { title: '应用（AppKey）', width: 200, dataIndex: 'appkey', key: 'appkey', fixed: 'left' },
-    {
-        title: '环境（ENV）',
-        dataIndex: 'env',
-        width: 120,
-        key: 'env',
-        render: (x: any) => {
-            let color = 'geekblue';
-            switch (x) {
-                case 'uat':
-                    color = 'purple';
-                    break;
-                case 'test':
-                    color = 'volcano';
-                    break;
-
-            }
-            return <Tag color={color}>{x.toUpperCase()}</Tag>;
-        },
-    },
-    {
-        title: '服务（ServiceName）',
-        dataIndex: 'serviceName',
-        key: '2',
-        render: (x: any) => {
-            return <span style={{ color: '#313653' }}>{x}</span>;
-        },
-    },
-    {
-        title: '版本',
-        width: 120,
-        dataIndex: 'version',
-        key: '3',
-        render: (x: any) => {
-            const text = x.length > 10 ? x.substr(0, 9) + '...' : x;
-            return (<Tooltip title={x}><span>{text}</span></Tooltip>);
-        },
-    },
-    {
-        title: '状态',
-        dataIndex: 'status',
-        width: 120,
-        key: '4',
-        render: (x: any) => {
-            let text: any;
-            switch (x) {
-                case 0:
-                    text = <Tag color="green">正常</Tag>;
-                    break;
-                case 1:
-                    text = <Tag color="orange">锁定</Tag>;
-                    break;
-                case 2:
-                    text = <Tag color="red">禁用</Tag>;
-                    break;
-                case 3:
-                    text = <Tag color="grey">已下线</Tag>;
-                    break;
-            }
-            return text;
-        },
-    },
-    {
-        title: '操作',
-        key: 'operation',
-        width: 150,
-        fixed: 'right',
-        render: () => (
-                <span>
-                <Button type="primary" size="small">编辑</Button>
-                <Button type="default" size="small">删除</Button>
-            </span>
-        ),
-
-    },
-];
-
 
 class ServiceTable extends React.Component<TableProps, TableState> {
 
@@ -100,8 +21,91 @@ class ServiceTable extends React.Component<TableProps, TableState> {
 
     }
 
+    editRecord = (record: any) => {
+        console.log('table record: ' + JSON.stringify(record))
+    };
+
     render() {
         const { total, tableSource, showInfoModal, isMobile, isLoading } = this.props;
+
+        const columns: ColumnProps<any>[] = [
+            // {title: 'ID', width: 100, dataIndex: 'id', key: 'id', fixed: 'left'},
+            { title: '应用（AppKey）', width: 200, dataIndex: 'appkey', key: 'appkey', fixed: 'left' },
+            {
+                title: '环境（ENV）',
+                dataIndex: 'env',
+                width: 120,
+                key: 'env',
+                render: (x: any) => {
+                    let color = 'geekblue';
+                    switch (x) {
+                        case 'uat':
+                            color = 'purple';
+                            break;
+                        case 'test':
+                            color = 'volcano';
+                            break;
+
+                    }
+                    return <Tag color={color}>{x.toUpperCase()}</Tag>;
+                },
+            },
+            {
+                title: '服务（ServiceName）',
+                dataIndex: 'serviceName',
+                key: '2',
+                render: (x: any) => {
+                    return <span style={{ color: '#313653' }}>{x}</span>;
+                },
+            },
+            {
+                title: '版本',
+                width: 120,
+                dataIndex: 'version',
+                key: '3',
+                render: (x: any) => {
+                    const text = x.length > 10 ? x.substr(0, 9) + '...' : x;
+                    return (<Tooltip title={x}><span>{text}</span></Tooltip>);
+                },
+            },
+            {
+                title: '状态',
+                dataIndex: 'status',
+                width: 120,
+                key: '4',
+                render: (x: any) => {
+                    let text: any;
+                    switch (x) {
+                        case 0:
+                            text = <Tag color="green">正常</Tag>;
+                            break;
+                        case 1:
+                            text = <Tag color="orange">锁定</Tag>;
+                            break;
+                        case 2:
+                            text = <Tag color="red">禁用</Tag>;
+                            break;
+                        case 3:
+                            text = <Tag color="grey">已下线</Tag>;
+                            break;
+                    }
+                    return text;
+                },
+            },
+            {
+                title: '操作',
+                key: 'operation',
+                width: 150,
+                fixed: 'right',
+                render: (_, record) => (
+                        <span>
+                            <Button type="primary" size="small" onClick={() => this.props.showEditModal(record)}>编辑</Button>
+                            <Button type="default" size="small">删除</Button>
+                        </span>
+                ),
+
+            },
+        ];
 
         if (isMobile) {
             columns[0].fixed = false;

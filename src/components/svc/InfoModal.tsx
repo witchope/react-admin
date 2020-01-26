@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { Col, Form, Input, Modal, Pagination, Row } from 'antd';
 import { ModalProps } from '../../types/svc';
 
@@ -6,7 +6,7 @@ import { ModalProps } from '../../types/svc';
  * @author maxwell
  * @desc Information modal
  */
-class InfoModal extends React.Component<ModalProps, any> {
+class InfoModal extends Component<ModalProps, any> {
 
     constructor(props: ModalProps) {
         super(props);
@@ -32,13 +32,9 @@ class InfoModal extends React.Component<ModalProps, any> {
     }
 
     close = () => {
-        const { closeInfoModal } = this.props;
-        this.setState(() => {
-            return {
-                modalData: [],
-            };
-        });
-        closeInfoModal('[]');
+        const { closeModal } = this.props;
+        this.setState({ modalData: [] });
+        closeModal();
     };
 
     handleSubmit = (e: any) => {
@@ -92,49 +88,49 @@ class InfoModal extends React.Component<ModalProps, any> {
         }
 
         return (
-            <Modal visible={visible} onCancel={this.close}>
-                <Form {...formItemLayout} onSubmit={this.handleSubmit}>
-                    <Row gutter={18}>
-                        <Col span={24}>
-                            <Form.Item label="服务">
-                                {
-                                    // getFieldDecorator('appkey', {
-                                    //     initialValue: '',
-                                    // })(
-                                    <Input disabled value={appkey} />
-                                    // )
-                                }
-                            </Form.Item>
-                        </Col>
-                        <Col span={24}>
-                            <Form.Item label="IP">
-                                <Input disabled value={ip} />
-                            </Form.Item>
-                        </Col>
-                        <Col span={24}>
-                            <Form.Item label="PORT">
-                                <Input disabled value={port} />
-                            </Form.Item>
-                        </Col>
-                        <Col span={24}>
-                            <Form.Item label="传输协议">
-                                <Input disabled value={transportType} />
-                            </Form.Item>
-                        </Col>
-                        <Col span={24}>
-                            <Form.Item label="状态">
-                                <Input disabled value={status} />
-                            </Form.Item>
-                        </Col>
-                        <Col span={24}>
-                            <Form.Item label="负载权重">
-                                <Input disabled value={weight} />
-                            </Form.Item>
-                        </Col>
-                    </Row>
-                </Form>
-                <Pagination simple size="small" total={modalData.length * 10} onChange={this.changePage} />
-            </Modal>
+                <Modal visible={visible} onCancel={this.close}>
+                    <Form {...formItemLayout} onSubmit={this.handleSubmit}>
+                        <Row gutter={18}>
+                            <Col span={24}>
+                                <Form.Item label="服务">
+                                    {
+                                        // getFieldDecorator('appkey', {
+                                        //     initialValue: '',
+                                        // })(
+                                        <Input disabled value={appkey} />
+                                        // )
+                                    }
+                                </Form.Item>
+                            </Col>
+                            <Col span={24}>
+                                <Form.Item label="IP">
+                                    <Input disabled value={ip} />
+                                </Form.Item>
+                            </Col>
+                            <Col span={24}>
+                                <Form.Item label="PORT">
+                                    <Input disabled value={port} />
+                                </Form.Item>
+                            </Col>
+                            <Col span={24}>
+                                <Form.Item label="传输协议">
+                                    <Input disabled value={transportType} />
+                                </Form.Item>
+                            </Col>
+                            <Col span={24}>
+                                <Form.Item label="状态">
+                                    <Input disabled value={status} />
+                                </Form.Item>
+                            </Col>
+                            <Col span={24}>
+                                <Form.Item label="负载权重">
+                                    <Input disabled value={weight} />
+                                </Form.Item>
+                            </Col>
+                        </Row>
+                    </Form>
+                    <Pagination simple size="small" total={modalData.length * 10} onChange={this.changePage} />
+                </Modal>
         );
     }
 
