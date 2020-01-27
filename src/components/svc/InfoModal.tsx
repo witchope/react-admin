@@ -88,18 +88,12 @@ class InfoModal extends Component<ModalProps, any> {
         }
 
         return (
-                <Modal visible={visible} onCancel={this.close}>
+                <Modal title="服务详情" visible={visible} onCancel={this.close}>
                     <Form {...formItemLayout} onSubmit={this.handleSubmit}>
                         <Row gutter={18}>
                             <Col span={24}>
                                 <Form.Item label="服务">
-                                    {
-                                        // getFieldDecorator('appkey', {
-                                        //     initialValue: '',
-                                        // })(
-                                        <Input disabled value={appkey} />
-                                        // )
-                                    }
+                                    <Input disabled value={appkey} />
                                 </Form.Item>
                             </Col>
                             <Col span={24}>
@@ -136,4 +130,4 @@ class InfoModal extends Component<ModalProps, any> {
 
 }
 
-export const CInfoModal: any = Form.create()(InfoModal);
+export const CInfoModal = Form.create()(InfoModal);

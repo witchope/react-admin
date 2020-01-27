@@ -56,7 +56,7 @@ class App extends Component<AppProps, AppState> {
             description: (
                     <div>欢迎加入锐竞<span role="img" aria-label="nerd">🤓</span>,一哩我哩 giao giao</div>
             ),
-            icon: <Icon type="smile-circle" style={{ color: 'red' }}/>,
+            icon: <Icon type="smile-circle" style={{ color: 'red' }} />,
             duration: 0,
         });
         localStorage.setItem('isFirst', JSON.stringify(false));
@@ -86,9 +86,9 @@ class App extends Component<AppProps, AppState> {
                 <DocumentTitle title={title}>
                     <Layout>
                         {!isMobile && checkLogin(auth.permissions) && (
-                                <SiderCustom collapsed={this.state.collapsed}/>
+                                <SiderCustom collapsed={this.state.collapsed} />
                         )}
-                        <ThemePicker/>
+                        <ThemePicker />
                         <Layout style={{ flexDirection: 'column' }}>
                             <HeaderCustom
                                     toggle={this.toggle}
@@ -99,7 +99,7 @@ class App extends Component<AppProps, AppState> {
                                     setAlitaState={this.props.windowChange}
                             />
                             <Content style={{ margin: '0 16px', overflow: 'initial', flex: '1 1 0' }}>
-                                <Routes auth={auth}/>
+                                <Routes auth={auth} />
                             </Content>
                             <Footer style={{ textAlign: 'center' }}>
                                 MSharp-Admin ©{new Date().getFullYear()} Created by guoxiaohan@rjmart.cn
