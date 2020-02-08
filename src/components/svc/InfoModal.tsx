@@ -1,133 +1,108 @@
-import React, { Component } from 'react';
+import React, { FunctionComponent, useEffect, useState } from 'react';
 import { Col, Form, Input, Modal, Pagination, Row } from 'antd';
 import { ModalProps } from '../../types/svc';
+
+const formItemLayout = {
+    labelCol: {
+        xs: { span: 24 },
+        sm: { span: 4 },
+    },
+    wrapperCol: {
+        xs: { span: 24 },
+        sm: { span: 20 },
+    },
+};
+
+// const useMountEffect = (fun: EffectCallback) => useEffect(fun, []);
 
 /**
  * @author maxwell
  * @desc Information modal
  */
-class InfoModal extends Component<ModalProps, any> {
+const InfoModal: FunctionComponent<ModalProps> = (props: ModalProps) => {
 
-    constructor(props: ModalProps) {
-        super(props);
-        this.state = {
-            modalData: [],
-            current: 0,
-        };
-    }
+    const [current, setCurrent] = useState(0);
+    const [modalData, setModalData] = useState([{
+        appkey: '',
+        ip: '',
+        port: '',
+        transportType: '',
+        status: '',
+        weight: '',
+    }]);
 
-    componentDidUpdate(prevProps: Readonly<ModalProps>, prevState: Readonly<any>, snapshot?: any): void {
-        const { info } = this.props;
-
-        if (info && prevProps.info !== info) {
-            const arr = JSON.parse(info);
-            if (arr.length > 0) {
-                this.setState(() => {
-                    return {
-                        modalData: arr,
-                    };
-                });
-            }
-        }
-    }
-
-    close = () => {
-        const { closeModal } = this.props;
-        this.setState({ modalData: [] });
+    const close = () => {
+        const { closeModal } = props;
+        setModalData([]);
         closeModal();
     };
 
-    handleSubmit = (e: any) => {
-        e.preventDefault();
-        const { form } = this.props;
+    const [form] = Form.useForm();
 
-        form!.validateFieldsAndScroll((err, values) => {
-            if (!err) {
-                console.log('Received values of form: ', values);
-            }
-        });
+    const changePage = (page: number) => {
+        setCurrent(page);
     };
 
-    changePage = (page: number) => {
-        this.setState(() => {
-            return {
-                current: page,
-            };
-        });
-    };
-
-    render() {
-        // const {getFieldDecorator, setFieldsValue} = this.props.form!;
-        const { modalData, current } = this.state;
-        const { visible } = this.props;
-
-        const formItemLayout = {
-            labelCol: {
-                xs: { span: 24 },
-                sm: { span: 4 },
-            },
-            wrapperCol: {
-                xs: { span: 24 },
-                sm: { span: 20 },
-            },
-        };
-
-        let appkey = '';
-        let ip = '';
-        let port = '';
-        let transportType = '';
-        let status = '';
-        let weight = '';
-        if (modalData.length > 0 && modalData[0].appkey) {
-            appkey = modalData[current].appkey;
-            ip = modalData[current].ip;
-            port = modalData[current].port;
-            transportType = modalData[current].transportType.toUpperCase();
-            status = modalData[current].status;
-            weight = modalData[current].weight;
+    useEffect(()=> {
+        const arr = JSON.parse(props.info);
+        if (arr.length > 0) {
+            setModalData(arr)
         }
+    }, [props.info]);
 
-        return (
-                <Modal title="服务详情" visible={visible} onCancel={this.close}>
-                    <Form {...formItemLayout} onSubmit={this.handleSubmit}>
-                        <Row gutter={18}>
-                            <Col span={24}>
-                                <Form.Item label="服务">
-                                    <Input disabled value={appkey} />
-                                </Form.Item>
-                            </Col>
-                            <Col span={24}>
-                                <Form.Item label="IP">
-                                    <Input disabled value={ip} />
-                                </Form.Item>
-                            </Col>
-                            <Col span={24}>
-                                <Form.Item label="PORT">
-                                    <Input disabled value={port} />
-                                </Form.Item>
-                            </Col>
-                            <Col span={24}>
-                                <Form.Item label="传输协议">
-                                    <Input disabled value={transportType} />
-                                </Form.Item>
-                            </Col>
-                            <Col span={24}>
-                                <Form.Item label="状态">
-                                    <Input disabled value={status} />
-                                </Form.Item>
-                            </Col>
-                            <Col span={24}>
-                                <Form.Item label="负载权重">
-                                    <Input disabled value={weight} />
-                                </Form.Item>
-                            </Col>
-                        </Row>
-                    </Form>
-                    <Pagination simple size="small" total={modalData.length * 10} onChange={this.changePage} />
-                </Modal>
-        );
-    }
+    useEffect(() => {
+        if (modalData.length > 0) {
+            const values = {
+                appkey: modalData[current].appkey,
+                ip: modalData[current].ip,
+                port: modalData[current].port,
+                transportType: modalData[current].transportType.toUpperCase(),
+                status: modalData[current].status,
+                weight: modalData[current].weight,
+            };
+            form!.setFieldsValue(values);
+        }
+    }, [current, modalData, form]);
 
-}
+    return (
+            <Modal title="服务详情" visible={props.visible} onCancel={close} >
+                <Form {...formItemLayout} initialValues={modalData[current]} form={form} >
+                    <Row gutter={18}>
+                        <Col span={24}>
+                            <Form.Item name="appkey" label="服务">
+                                <Input disabled />
+                            </Form.Item>
+                        </Col>
+                        <Col span={24}>
+                            <Form.Item name="ip" label="IP">
+                                <Input disabled />
+                            </Form.Item>
+                        </Col>
+                        <Col span={24}>
+                            <Form.Item name="port" label="PORT">
+                                <Input disabled />
+                            </Form.Item>
+                        </Col>
+                        <Col span={24}>
+                            <Form.Item name="transportType" label="传输协议">
+                                <Input disabled />
+                            </Form.Item>
+                        </Col>
+                        <Col span={24}>
+                            <Form.Item name="status" label="状态">
+                                <Input disabled />
+                            </Form.Item>
+                        </Col>
+                        <Col span={24}>
+                            <Form.Item name="weight" label="负载权重">
+                                <Input disabled />
+                            </Form.Item>
+                        </Col>
+                    </Row>
+                </Form>
+                <Pagination simple size="small" total={modalData.length * 10} onChange={changePage} />
+            </Modal>
+    );
+};
 
-export const CInfoModal = Form.create()(InfoModal);
+export const CInfoModal = InfoModal;

@@ -1,52 +1,43 @@
-/**
- * Created by hao.cheng on 2017/4/14.
- */
-import React, { Component, FormEvent } from 'react';
-import { Form, Icon, Input, Button, Checkbox } from 'antd';
+import React, { Component } from 'react';
+import { Icon as LegacyIcon } from '@ant-design/compatible';
+import '@ant-design/compatible/assets/index.css';
+import { Input, Button, Form, Checkbox } from 'antd';
 import { FormProps } from 'antd/lib/form';
+
 const FormItem = Form.Item;
 
 type NormalLoginFormProps = {} & FormProps;
 
 class NormalLoginForm extends Component<NormalLoginFormProps> {
-    handleSubmit = (e: FormEvent) => {
-        e.preventDefault();
-        this.props.form!.validateFields((err, values) => {
-            if (!err) {
-                console.log('Received values of form: ', values);
-            }
-        });
+    handleSubmit = () => {
+        // const [form] = Form.useForm();
+        // form!.validateFields().then((values) => {
+        //         console.log('Received values of form: ', values);
+        // });
     };
+
     render() {
-        const { getFieldDecorator } = this.props.form!;
+        // const { getFieldDecorator } = this.props.form!;
         return (
-            <Form onSubmit={this.handleSubmit} style={{ maxWidth: '300px' }}>
-                <FormItem>
-                    {getFieldDecorator('userName', {
-                        rules: [{ required: true, message: '请输入用户名!' }],
-                    })(
-                        <Input
-                            prefix={<Icon type="user" style={{ fontSize: 13 }} />}
+            <Form onFinish={this.handleSubmit}
+                  style={{ maxWidth: '300px' }}
+                  initialValues={{remember: true}}
+            >
+                <FormItem name="userName"
+                          rules={[{ required: true, message: '请输入用户名!' }]}
+                >
+                    <Input prefix={<LegacyIcon type="user" style={{ fontSize: 13 }} />}
                             placeholder="用户名"
-                        />
-                    )}
+                    />
                 </FormItem>
-                <FormItem>
-                    {getFieldDecorator('password', {
-                        rules: [{ required: true, message: '请输入密码!' }],
-                    })(
-                        <Input
-                            prefix={<Icon type="lock" style={{ fontSize: 13 }} />}
+                <FormItem name="password" rules={[{ required: true, message: '请输入密码!' }]}>
+                    <Input prefix={<LegacyIcon type="lock" style={{ fontSize: 13 }} />}
                             type="password"
                             placeholder="密码"
-                        />
-                    )}
+                    />
                 </FormItem>
-                <FormItem>
-                    {getFieldDecorator('remember', {
-                        valuePropName: 'checked',
-                        initialValue: true,
-                    })(<Checkbox>记住我</Checkbox>)}
+                <FormItem name="remember" valuePropName="checked" >
+                    <Checkbox>记住我</Checkbox>
                     <span className="login-form-forgot" style={{ float: 'right' }}>
                         忘记密码
                     </span>
@@ -58,13 +49,13 @@ class NormalLoginForm extends Component<NormalLoginFormProps> {
                     >
                         登录
                     </Button>
-                    或 <span>现在就去注册!</span>
+                     <span>或 现在就去注册!</span>
                 </FormItem>
             </Form>
         );
     }
 }
 
-const LoginForm = Form.create()(NormalLoginForm);
+const LoginForm = NormalLoginForm;
 
 export default LoginForm;

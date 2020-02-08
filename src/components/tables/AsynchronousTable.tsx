@@ -5,7 +5,7 @@ import React from 'react';
 import { Table, Button, Row, Col, Card } from 'antd';
 import { getBbcNews } from '../../axios';
 import BreadcrumbCustom from '../BreadcrumbCustom';
-import { TableRowSelection } from 'antd/lib/table';
+import { TableRowSelection } from 'antd/lib/table/interface';
 
 const columns = [
     {

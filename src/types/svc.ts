@@ -1,4 +1,4 @@
-import { FormProps } from 'antd/lib/form';
+// import { FormProps } from 'antd/lib/form';
 
 /**
  * Svc types
@@ -26,7 +26,7 @@ export interface DispatchProps {
     closeModal: any;
 }
 
-export type SvcProps = StateProps & DispatchProps & FormProps;
+export type SvcProps = StateProps & DispatchProps;
 
 export type SvcState = {};
 
@@ -35,7 +35,7 @@ export type SvcState = {};
 export type SearchProps = {
     appKeys: any,
     submit: (params: any) => void
-} & FormProps;
+};
 
 export type TableProps = {
     tableSource: any[];
@@ -54,10 +54,10 @@ export type ModalProps = {
     info: string;
     visible: boolean;
     closeModal: () => void;
-} & FormProps;
+};
 
 export type EditModalProps = {
     record: any,
     editVisible: boolean,
     closeModal: () => void;
-} & FormProps;
+};

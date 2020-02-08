@@ -2,7 +2,8 @@
  * Created by hao.cheng on 2017/4/25.
  */
 import React, { Component } from 'react';
-import { Row, Col, Card, Button, notification, Icon, Select } from 'antd';
+import { Icon as LegacyIcon } from '@ant-design/compatible';
+import { Row, Col, Card, Button, notification, Select } from 'antd';
 import BreadcrumbCustom from '../BreadcrumbCustom';
 import { IconType, ConfigProps } from 'antd/lib/notification';
 const { Option } = Select;
@@ -61,7 +62,7 @@ class Notifications extends Component {
             message: 'Notification Title',
             description:
                 'This is the content of the notification. This is the content of the notification. This is the content of the notification.',
-            icon: <Icon type="smile-circle" style={{ color: '#108ee9' }} />,
+            icon: <LegacyIcon type="smile-circle" style={{ color: '#108ee9' }} />,
         });
     };
 

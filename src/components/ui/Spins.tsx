@@ -2,6 +2,7 @@
  * Created by hao.cheng on 2017/4/23.
  */
 import React from 'react';
+import { Icon as LegacyIcon } from '@ant-design/compatible';
 import { Row, Col, Card, Spin, Alert, Switch, Button } from 'antd';
 import BreadcrumbCustom from '../BreadcrumbCustom';
 import NProgress from 'nprogress';
@@ -75,11 +76,11 @@ class Spins extends React.Component {
                             <Card bordered={false}>
                                 <h4>顶部进度条</h4>
                                 <p>
-                                    <Button icon="caret-right" onClick={this.nprogressStart} />
+                                    <Button icon={<LegacyIcon type="caret-right" />} onClick={this.nprogressStart} />
                                     <span> NProgress.start() — 显示进度条</span>
                                 </p>
                                 <p style={{marginTop: 20}}>
-                                    <Button icon="caret-right" onClick={this.nprogressDone} />
+                                    <Button icon={<LegacyIcon type="caret-right" />} onClick={this.nprogressDone} />
                                     <span>  NProgress.done() — 进度条完成</span>
                                 </p>
                             </Card>
@@ -87,7 +88,7 @@ class Spins extends React.Component {
                     </Col>
                 </Row>
             </div>
-        )
+        );
     }
 }
 

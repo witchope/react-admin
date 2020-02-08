@@ -2,7 +2,8 @@
  * Created by hao.cheng on 2017/4/25.
  */
 import React, { Component } from 'react';
-import { Row, Col, Card, Tabs, Icon, Radio, Button } from 'antd';
+import { Icon as LegacyIcon } from '@ant-design/compatible';
+import { Row, Col, Card, Tabs, Radio, Button } from 'antd';
 import BreadcrumbCustom from '../BreadcrumbCustom';
 import { RadioChangeEvent } from 'antd/lib/radio';
 import { TabsPosition } from 'antd/lib/tabs';
@@ -88,7 +89,7 @@ class TabsCustom extends Component<any, TabsCustomState> {
                                     <TabPane
                                         tab={
                                             <span>
-                                                <Icon type="apple" />
+                                                <LegacyIcon type="apple" />
                                                 Tab 1
                                             </span>
                                         }
@@ -99,7 +100,7 @@ class TabsCustom extends Component<any, TabsCustomState> {
                                     <TabPane
                                         tab={
                                             <span>
-                                                <Icon type="android" />
+                                                <LegacyIcon type="android" />
                                                 Tab 2
                                             </span>
                                         }

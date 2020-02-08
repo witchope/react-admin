@@ -2,7 +2,8 @@
  * Created by hao.cheng on 2017/4/23.
  */
 import React from 'react';
-import { Row, Col, Card, Button, Radio, Icon, Menu, Dropdown } from 'antd';
+import { Icon as LegacyIcon } from '@ant-design/compatible';
+import { Row, Col, Card, Button, Radio, Menu, Dropdown } from 'antd';
 import BreadcrumbCustom from '../BreadcrumbCustom';
 import { RadioChangeEvent } from 'antd/lib/radio';
 import { ClickParam } from 'antd/lib/menu';
@@ -17,7 +18,7 @@ class Buttons extends React.Component<any, ButtonsState> {
     constructor(props: any) {
         super(props);
         this.state = {
-            size: 'default',
+            size: 'middle',
             loading: false,
             iconLoading: false,
         };
@@ -61,17 +62,17 @@ class Buttons extends React.Component<any, ButtonsState> {
                     <Col className="gutter-row" md={12}>
                         <div className="gutter-box">
                             <Card bordered={false}>
-                                <Button type="primary" shape="circle" icon="search" />
-                                <Button type="primary" icon="search">
+                                <Button type="primary" shape="circle" icon={<LegacyIcon type="search" />} />
+                                <Button type="primary" icon={<LegacyIcon type="search" />}>
                                     Search
                                 </Button>
-                                <Button shape="circle" icon="search" />
-                                <Button icon="search">Search</Button>
+                                <Button shape="circle" icon={<LegacyIcon type="search" />} />
+                                <Button icon={<LegacyIcon type="search" />}>Search</Button>
                                 <br />
-                                <Button shape="circle" icon="search" />
-                                <Button icon="search">Search</Button>
-                                <Button type="dashed" shape="circle" icon="search" />
-                                <Button type="dashed" icon="search">
+                                <Button shape="circle" icon={<LegacyIcon type="search" />} />
+                                <Button icon={<LegacyIcon type="search" />}>Search</Button>
+                                <Button type="dashed" shape="circle" icon={<LegacyIcon type="search" />} />
+                                <Button type="dashed" icon={<LegacyIcon type="search" />}>
                                     Search
                                 </Button>
                             </Card>
@@ -87,8 +88,8 @@ class Buttons extends React.Component<any, ButtonsState> {
                                 </Radio.Group>
                                 <br />
                                 <br />
-                                <Button type="primary" shape="circle" icon="download" size={size} />
-                                <Button type="primary" icon="download" size={size}>
+                                <Button type="primary" shape="circle" icon={<LegacyIcon type="download" />} size={size} />
+                                <Button type="primary" icon={<LegacyIcon type="download" />} size={size}>
                                     Download
                                 </Button>
                                 <Button type="primary" size={size}>
@@ -97,12 +98,12 @@ class Buttons extends React.Component<any, ButtonsState> {
                                 <br />
                                 <Button.Group size={size}>
                                     <Button type="primary">
-                                        <Icon type="left" />
+                                        <LegacyIcon type="left" />
                                         Backward
                                     </Button>
                                     <Button type="primary">
                                         Forward
-                                        <Icon type="right" />
+                                        <LegacyIcon type="right" />
                                     </Button>
                                 </Button.Group>
                             </Card>
@@ -115,7 +116,7 @@ class Buttons extends React.Component<any, ButtonsState> {
                                 <Button>secondary</Button>
                                 <Dropdown overlay={menu}>
                                     <Button>
-                                        more <Icon type="down" />
+                                        more <LegacyIcon type="down" />
                                     </Button>
                                 </Dropdown>
                             </Card>
@@ -140,7 +141,7 @@ class Buttons extends React.Component<any, ButtonsState> {
                                 </Button>
                                 <Button
                                     type="primary"
-                                    icon="poweroff"
+                                    icon={<LegacyIcon type="poweroff" />}
                                     loading={this.state.iconLoading}
                                     onClick={this.enterIconLoading}
                                 >

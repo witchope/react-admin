@@ -9,7 +9,7 @@ import { ReducerState } from '../types/svc';
 const initState: ReducerState = {
     appKeys: [],
     tableSource: [],
-    info: '',
+    info: '[]',
     record: {},
     editVisible: false,
     visible: false,

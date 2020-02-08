@@ -3,7 +3,7 @@
  */
 import React from 'react';
 import { Table } from 'antd';
-import { TableRowSelection } from 'antd/lib/table';
+import { TableRowSelection } from 'antd/lib/table/interface';
 
 const columns = [
     {
@@ -42,37 +42,37 @@ class SelectTable extends React.Component {
         const { selectedRowKeys } = this.state;
         const rowSelection: TableRowSelection<any> = {
             selectedRowKeys,
-            onChange: this.onSelectChange,
-            selections: [
-                {
-                    key: 'odd',
-                    text: '选择奇数列',
-                    onSelect: (changableRowKeys: string[]) => {
-                        let newSelectedRowKeys = [];
-                        newSelectedRowKeys = changableRowKeys.filter((key, index) => {
-                            if (index % 2 !== 0) {
-                                return false;
-                            }
-                            return true;
-                        });
-                        this.setState({ selectedRowKeys: newSelectedRowKeys });
-                    },
-                },
-                {
-                    key: 'even',
-                    text: '选择偶数列',
-                    onSelect: (changableRowKeys: string[]) => {
-                        let newSelectedRowKeys = [];
-                        newSelectedRowKeys = changableRowKeys.filter((key, index) => {
-                            if (index % 2 !== 0) {
-                                return true;
-                            }
-                            return false;
-                        });
-                        this.setState({ selectedRowKeys: newSelectedRowKeys });
-                    },
-                },
-            ],
+            // onChange: this.onSelectChange,
+            // selections: [
+            //     {
+            //         key: 'odd',
+            //         text: '选择奇数列',
+            //         onSelect: (changableRowKeys: string[]) => {
+            //             let newSelectedRowKeys = [];
+            //             newSelectedRowKeys = changableRowKeys.filter((key, index) => {
+            //                 if (index % 2 !== 0) {
+            //                     return false;
+            //                 }
+            //                 return true;
+            //             });
+            //             this.setState({ selectedRowKeys: newSelectedRowKeys });
+            //         },
+            //     },
+            //     {
+            //         key: 'even',
+            //         text: '选择偶数列',
+            //         onSelect: (changableRowKeys: string[]) => {
+            //             let newSelectedRowKeys = [];
+            //             newSelectedRowKeys = changableRowKeys.filter((key, index) => {
+            //                 if (index % 2 !== 0) {
+            //                     return true;
+            //                 }
+            //                 return false;
+            //             });
+            //             this.setState({ selectedRowKeys: newSelectedRowKeys });
+            //         },
+            //     },
+            // ],
             // onSelection: this.onSelection,
         };
         return <Table rowSelection={rowSelection} columns={columns} dataSource={data} />;

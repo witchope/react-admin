@@ -2,7 +2,8 @@
  * Created by hao.cheng on 2017/4/16.
  */
 import React from 'react';
-import { Table, Input, Button, Icon } from 'antd';
+import { Icon as LegacyIcon } from '@ant-design/compatible';
+import { Table, Input, Button } from 'antd';
 
 const data = [
     {
@@ -93,7 +94,7 @@ class SearchTable extends React.Component {
                     </div>
                 ),
                 filterIcon: (
-                    <Icon
+                    <LegacyIcon
                         type="smile-o"
                         style={{ color: this.state.filtered ? '#108ee9' : '#aaa' }}
                     />

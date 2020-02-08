@@ -2,8 +2,8 @@
  * 路由组件出口文件
  * yezi 2018年6月24日
  */
-import Loadable from 'react-loadable';
-import Loading from './widget/Loading';
+// import Loadable from 'react-loadable';
+// import Loading from './widget/Loading';
 // import BasicForm from './forms/BasicForm';
 // import BasicTable from './tables/BasicTables';
 // import AdvancedTable from './tables/AdvancedTables';
@@ -31,11 +31,11 @@ import Dashboard from './dashboard/Dashboard';
 // import MultipleMenu from './extension/MultipleMenu';
 import ServiceRegister from './svc/ServiceRegister';
 
-const WysiwygBundle = Loadable({
-    // 按需加载富文本配置
-    loader: () => import('./ui/Wysiwyg'),
-    loading: Loading,
-});
+// const WysiwygBundle = Loadable({
+//     // 按需加载富文本配置
+//     loader: () => import('./ui/Wysiwyg'),
+//     loading: Loading,
+// });
 
 export default {
     // BasicForm,

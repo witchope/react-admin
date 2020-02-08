@@ -3,7 +3,7 @@
  */
 import React from 'react';
 import { Table } from 'antd';
-import { ColumnProps } from 'antd/lib/table';
+import { ColumnProps } from 'antd/lib/table/Column';
 
 const columns: ColumnProps<any>[] = [
     { title: 'Full Name', width: 100, dataIndex: 'name', key: 'name', fixed: 'left' },

@@ -9,16 +9,22 @@
 import React, { Component } from 'react';
 
 class PwaInstaller extends Component {
+
     state = {
         installed: true,
     };
+
+
     componentDidMount() {
         window.addEventListener('beforeinstallprompt', this.beforeInstallPrompt);
     }
+
     componentWillUnmount() {
         window.removeEventListener('beforeinstallprompt', this.beforeInstallPrompt);
     }
+
     deferredPrompt: any;
+
     beforeInstallPrompt = (e: Event) => {
         console.log('beforeinstallprompt Event fired');
         // 未安装PWA应用
@@ -29,6 +35,7 @@ class PwaInstaller extends Component {
         this.deferredPrompt = e;
         return false;
     };
+
     download = () => {
         if (this.deferredPrompt !== undefined) {
             // The user has had a postive interaction with our app and Chrome
@@ -47,6 +54,7 @@ class PwaInstaller extends Component {
             });
         }
     };
+
     render() {
         const { installed } = this.state;
         return (

@@ -1,43 +1,40 @@
-import React, { Component } from 'react';
-import { Icon } from 'antd';
+import React, { FunctionComponent, useState } from 'react';
 import { SketchPicker } from 'react-color';
+import { SettingOutlined } from '@ant-design/icons/lib';
 import classNames from 'classnames';
 
-class ThemePicker extends Component {
-    state = {
-        switcherOn: false,
-        background: localStorage.getItem('@primary-color') || '#313653',
+const ThemePicker: FunctionComponent = () => {
+
+    const [switcherOn, setSwitcherOn] = useState(false);
+    const [background, setBackground] = useState(localStorage.getItem('@primary-color') || '#313653')
+
+    const _switcherOn = () => {
+        setSwitcherOn(!switcherOn);
     };
-    _switcherOn = () => {
-        this.setState({
-            switcherOn: !this.state.switcherOn,
-        });
-    };
-    _handleChangeComplete = (color: any) => {
+
+    const _handleChangeComplete = (color: any) => {
         console.log(color);
-        this.setState({ background: color.hex });
+        setBackground(color.hex);
         localStorage.setItem('@primary-color', color.hex);
 
         (window as any).less.modifyVars({
             '@primary-color': color.hex,
         });
     };
-    render() {
-        const { switcherOn, background } = this.state;
-        return (
+
+    return (
             <div className={classNames('switcher dark-white', { active: switcherOn })}>
-                <span className="sw-btn dark-white" onClick={this._switcherOn}>
-                    <Icon type="setting" className="text-dark" />
+                <span className="sw-btn dark-white" onClick={_switcherOn}>
+                    <SettingOutlined className="text-dark" />
                 </span>
                 <div style={{ padding: 10 }} className="clear">
                     <SketchPicker
-                        color={background}
-                        onChangeComplete={this._handleChangeComplete}
+                            color={background}
+                            onChangeComplete={_handleChangeComplete}
                     />
                 </div>
             </div>
-        );
-    }
-}
+    );
+};
 
 export default ThemePicker;

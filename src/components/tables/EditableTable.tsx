@@ -3,7 +3,9 @@
  */
 
 import React from 'react';
-import { Table, Input, InputNumber, Popconfirm, Form, Button } from 'antd';
+import { Form } from '@ant-design/compatible';
+import '@ant-design/compatible/assets/index.css';
+import { Table, Input, InputNumber, Popconfirm, Button } from 'antd';
 
 const data: any[] = [];
 for (let i = 0; i < 100; i++) {
@@ -193,7 +195,7 @@ export default class EditableTable extends React.Component<EditableTableProps, E
 
         return (
             <Table
-                components={components}
+                // components={components}
                 bordered
                 dataSource={this.state.data}
                 columns={columns}

@@ -1,5 +1,5 @@
 import React, { FunctionComponent } from 'react';
-import { Form, Input, Modal } from 'antd';
+import { Input, Modal, Form } from 'antd';
 import { EditModalProps } from '../../types/svc';
 
 const formItemLayout = {
@@ -17,40 +17,29 @@ const formItemLayout = {
  * Edit modal component
  */
 const EditModal: FunctionComponent<EditModalProps> = ({
-                                                          form,
                                                           record,
                                                           editVisible,
                                                           closeModal,
                                                       }: EditModalProps): JSX.Element => {
+    const [form] = Form.useForm();
+    const { appkey, env, serviceName } = record;
 
     return (
             <Modal title="编辑" visible={editVisible} onCancel={closeModal}>
-                <Form {...formItemLayout}>
-                    <Form.Item label="应用">
-                        {
-                            form!.getFieldDecorator('appkey', {
-                                initialValue: record.appkey,
-                            })(<Input />)
-                        }
+                <Form {...formItemLayout} form={form} initialValues={{appkey, env, serviceName}}>
+                    <Form.Item label="应用" name="appkey" >
+                        <Input />
                     </Form.Item>
-                    <Form.Item label="环境">
-                        {
-                            form!.getFieldDecorator('env', {
-                                initialValue: record.env,
-                            })(<Input disabled />)
-                        }
+                    <Form.Item label="环境" name="env">
+                        <Input disabled />
                     </Form.Item>
-                    <Form.Item label="服务名">
-                        {
-                            form!.getFieldDecorator('serviceName', {
-                                initialValue: record.serviceName,
-                            })(<Input disabled />)
-                        }
+                    <Form.Item label="服务名" name="serviceName">
+                        <Input disabled />
                     </Form.Item>
                 </Form>
             </Modal>
     );
 };
 
-export const CEditModal = Form.create()(EditModal);
+export const CEditModal = EditModal;
 
